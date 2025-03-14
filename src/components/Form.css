@@ -1,0 +1,45 @@
+/* Custom Modal Styling */
+.modal-dialog {
+    max-width: 50vw !important;
+    /* Adjust modal width */
+    width: 80% !important;
+    /* Make it responsive */
+}
+
+.modal-content {
+    padding: 0 !important;
+    margin: 0 auto;
+    /* Center the modal properly */
+    border-radius: 10px;
+    /* Optional: Make it look better */
+}
+
+.modal-body {
+    max-height: 75vh;
+    /* Adjust height */
+    overflow-y: auto;
+    /* Enable scrolling if content overflows */
+}
+
+/* Ensure Bootstrap default styles don't override */
+@media (max-width: 768px) {
+    .modal-dialog {
+        max-width: 95vw !important;
+        width: 100% !important;
+        /* Make it fit on small screens */
+    }
+        .modal-content {
+            padding: 0 !important;
+            margin: 0 auto;
+            /* Center the modal properly */
+            border-radius: 10px;
+            /* Optional: Make it look better */
+        }
+    
+        .modal-body {
+            max-height: 75vh;
+            /* Adjust height */
+            overflow-y: auto;
+            /* Enable scrolling if content overflows */
+        }
+}
