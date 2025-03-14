@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://testback-wozi.onrender.com";
 
 export const verifyTokenAPI = (token) => {
   return axios.post(

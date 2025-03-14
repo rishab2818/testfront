@@ -43,7 +43,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
     }
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/ai/generate-question",
+        "https://testback-wozi.onrender.com/api/ai/generate-question",
         {
           subject: subject !== "Select Subject" ? subject : undefined,
           topic: context.trim() || undefined,
