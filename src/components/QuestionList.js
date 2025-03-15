@@ -16,14 +16,18 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
       setLoading(true); // ✅ Always set loading to true before fetching new data
       setError(null); // ✅ Reset error when fetching new data
 
-      console.log("filterType", filterType, mode);
-
       try {
         let data = [];
         if (filterType === "all") {
           data = await fetchQuestionsAPI(mode);
         } else {
+          console.log("herer");
           data = await fetchFollowerQuestionsAPI(mode, user?._id);
+          //update backend..to bored rite now
+          const filteredData = data.filter((item) =>
+            mode === "question" ? item.type === "upsc" : item.type === "news"
+          );
+          data = filteredData;
         }
 
         setQuestions(data);
