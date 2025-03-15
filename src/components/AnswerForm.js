@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
 import { Form, Button, InputGroup, Modal } from "react-bootstrap";
@@ -20,7 +20,7 @@ const AnswerForm = ({
   const [loading, setLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
-
+  const quillRef = useRef(null);
   // ✅ Handle Answer Submission
   const handleSubmit = async () => {
     if (!answer.trim()) {
@@ -65,7 +65,32 @@ const AnswerForm = ({
     handleClose();
     setAnswer("");
   };
+  const imageHandler = () => {
+    const imageUrl = prompt("Enter image URL:");
+    if (imageUrl) {
+      const quill = quillRef.current.getEditor(); // Get Quill instance
+      const range = quill.getSelection(); // Get cursor position
+      if (range) {
+        quill.insertEmbed(range.index, "image", imageUrl);
+      }
+    }
+  };
 
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["blockquote", "code-block"],
+          ["link", "image"], // ✅ Enables Image Button
+        ],
+        handlers: { image: imageHandler }, // ✅ Custom URL Upload
+      },
+    }),
+    []
+  );
   return (
     <Modal show={show} onHide={closingModal} size="lg">
       <Modal.Header closeButton>
@@ -82,6 +107,8 @@ const AnswerForm = ({
           <Form.Group className="mb-3">
             <Form.Label>Your Answer</Form.Label>
             <ReactQuill
+              ref={quillRef}
+              modules={modules}
               value={answer}
               onChange={setAnswer}
               style={{ height: "150px", overflowY: "scroll" }}

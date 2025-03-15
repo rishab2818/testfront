@@ -1,0 +1,10 @@
+.question-card img {
+    max-width: 100%;
+    /* Ensures the image fits within the card */
+    height: auto;
+    /* Maintains aspect ratio */
+    display: block;
+    /* Prevents inline spacing issues */
+    object-fit: contain;
+    /* Ensures the entire image is visible */
+}

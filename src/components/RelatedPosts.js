@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
-
+import "./image.css"; // Import the CSS file
 const RelatedPosts = ({ allQuestions, selectedCategory }) => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -71,6 +71,7 @@ const RelatedPosts = ({ allQuestions, selectedCategory }) => {
                     Top Answer:
                   </span>{" "}
                   <span
+                    className="question-card"
                     dangerouslySetInnerHTML={{
                       __html:
                         q.topAnswer.content.split(" ").slice(0, 20).join(" ") +

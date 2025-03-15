@@ -13,7 +13,7 @@ import {
 } from "../utils/api";
 import AuthContext from "../context/AuthContext";
 import { Toast, ToastContainer } from "react-bootstrap";
-
+import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; //  Show 5 answers per page
 const CHAR_LIMIT = 250; //  Limit initial content display
 const sourcePrivate = false;
@@ -173,6 +173,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                     <Card.Body>
                       <Card.Text>
                         <div
+                          className="question-card"
                           dangerouslySetInnerHTML={{
                             __html: expandedAnswers[ans._id]
                               ? ans.content

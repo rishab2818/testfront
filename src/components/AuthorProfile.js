@@ -11,6 +11,7 @@ import AuthContext from "../context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AuthorProfile.css";
 import ToastMessage from "./ToastMessage";
+import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; // 5 answers per page
 const AuthorProfile = ({ mode, selectedCategory }) => {
   const { authoruserId, includePrivate } = useParams();
@@ -185,6 +186,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
               </Card.Title>
               <Card.Text>
                 <span
+                  className="question-card"
                   dangerouslySetInnerHTML={{
                     __html:
                       answer.content.split(" ").slice(0, 20).join(" ") + "...",

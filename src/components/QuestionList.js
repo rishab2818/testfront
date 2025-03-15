@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, Row, Col, Spinner, Alert, Pagination } from "react-bootstrap";
 import { fetchQuestionsAPI, fetchFollowerQuestionsAPI } from "../utils/api"; // ✅ Import API function
 import AuthContext from "../context/AuthContext"; // ✅ For logged-in user context
-
+import "./image.css"; // Import the CSS file
 const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -98,6 +98,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
                   <>
                     <Card.Text>
                       <span
+                        className="question-card"
                         dangerouslySetInnerHTML={{
                           __html:
                             q.topAnswer.content

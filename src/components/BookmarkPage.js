@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { getBookmarksAPI, toggleBookmarkAPI } from "../utils/api"; // Ensure you have a removeBookmarkAPI function
 import AuthContext from "../context/AuthContext";
 import { Card, Button, Row, Col } from "react-bootstrap";
+import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; //  Show 5 answers per page
 const CHAR_LIMIT = 250; //  Limit initial content display
 const BookmarkPage = () => {
@@ -96,11 +97,15 @@ const BookmarkPage = () => {
 
                   <Card.Text>
                     {ans.content.length <= CHAR_LIMIT ? (
-                      <span dangerouslySetInnerHTML={{ __html: ans.content }} />
+                      <span
+                        dangerouslySetInnerHTML={{ __html: ans.content }}
+                        className="question-card"
+                      />
                     ) : expandedAnswers[ans._id] ? (
                       <>
                         <span
                           dangerouslySetInnerHTML={{ __html: ans.content }}
+                          className="question-card"
                         />
                         <Button
                           variant="link"
@@ -116,6 +121,7 @@ const BookmarkPage = () => {
                           dangerouslySetInnerHTML={{
                             __html: ans.content.slice(0, CHAR_LIMIT),
                           }}
+                          className="question-card"
                         />
                         ...
                         <Button

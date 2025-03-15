@@ -6,6 +6,7 @@ import { fetchGroupQuestionDetailsAPI, toggleBookmarkAPI } from "../utils/api";
 import { Toast, ToastContainer } from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
 import ToastMessage from "./ToastMessage";
+import "./image.css"; // Import the CSS file
 const sourcePrivate = true;
 const PAGE_SIZE = 5; //  Show 5 answers per page
 const CHAR_LIMIT = 250; //  Limit initial content display
@@ -112,6 +113,7 @@ const GroupQuestions = () => {
                     <Card.Body>
                       <Card.Text>
                         <div
+                          className="question-card"
                           dangerouslySetInnerHTML={{
                             __html: expandedAnswers[ans._id]
                               ? ans.content

@@ -19,6 +19,7 @@ import {
   Col,
 } from "react-bootstrap";
 import "./Profile.css"; // Import the CSS file
+import "./image.css"; // Import the CSS file
 const includePrivate = true;
 const Profile = ({ selectedCategory, mode }) => {
   const { user } = useContext(AuthContext);
@@ -248,6 +249,7 @@ const Profile = ({ selectedCategory, mode }) => {
                       {expandedAnswers[answer._id] ? (
                         <>
                           <span
+                            className="question-card"
                             dangerouslySetInnerHTML={{ __html: answer.content }}
                           />
                           <Button
@@ -261,6 +263,7 @@ const Profile = ({ selectedCategory, mode }) => {
                       ) : (
                         <>
                           <span
+                            className="question-card"
                             dangerouslySetInnerHTML={{
                               __html: answer.content.substring(0, 200),
                             }}

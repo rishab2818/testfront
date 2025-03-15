@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
 import {
@@ -34,6 +34,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState("00:00:00");
   const [isRunning, setIsRunning] = useState(false);
+  const quillRef = useRef(null);
 
   const generateQuestion = async () => {
     if (subject === "Select Subject") {
@@ -129,7 +130,32 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       setIsRunning(true);
     }
   };
+  const imageHandler = () => {
+    const imageUrl = prompt("Enter image URL:");
+    if (imageUrl) {
+      const quill = quillRef.current.getEditor(); // Get Quill instance
+      const range = quill.getSelection(); // Get cursor position
+      if (range) {
+        quill.insertEmbed(range.index, "image", imageUrl);
+      }
+    }
+  };
 
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["blockquote", "code-block"],
+          ["link", "image"], // ✅ Enables Image Button
+        ],
+        handlers: { image: imageHandler }, // ✅ Custom URL Upload
+      },
+    }),
+    []
+  );
   return (
     <Form>
       {/* Subject Selection */}
@@ -213,7 +239,9 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       <Form.Group className="mb-3">
         <Form.Label>Answer</Form.Label>
         <ReactQuill
+          ref={quillRef}
           value={answer}
+          modules={modules}
           onChange={setAnswer}
           style={{
             height: "200px",

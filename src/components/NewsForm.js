@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
 import { Form, Button, InputGroup } from "react-bootstrap";
@@ -21,7 +21,7 @@ const NewsForm = ({ userId, name, handleClose }) => {
   const [isPublic, setIsPublic] = useState(true);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-
+  const quillRef = useRef(null);
   // ✅ Handle category selection (multi-select)
   const toggleCategory = (category) => {
     setCategories(
@@ -80,7 +80,32 @@ const NewsForm = ({ userId, name, handleClose }) => {
       setShowToast(true);
     }
   };
+  const imageHandler = () => {
+    const imageUrl = prompt("Enter image URL:");
+    if (imageUrl) {
+      const quill = quillRef.current.getEditor(); // Get Quill instance
+      const range = quill.getSelection(); // Get cursor position
+      if (range) {
+        quill.insertEmbed(range.index, "image", imageUrl);
+      }
+    }
+  };
 
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["blockquote", "code-block"],
+          ["link", "image"], // ✅ Enables Image Button
+        ],
+        handlers: { image: imageHandler }, // ✅ Custom URL Upload
+      },
+    }),
+    []
+  );
   return (
     <Form>
       {/* Title Input */}
@@ -117,6 +142,8 @@ const NewsForm = ({ userId, name, handleClose }) => {
       <Form.Group className="mb-3">
         <Form.Label>Answer</Form.Label>
         <ReactQuill
+          ref={quillRef}
+          modules={modules}
           value={answer}
           onChange={setAnswer}
           style={{
