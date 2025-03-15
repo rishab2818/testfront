@@ -27,6 +27,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const { user } = useContext(AuthContext);
+  const [expandedAnswers, setExpandedAnswers] = useState({});
   const userId = user?._id;
 
   useEffect(() => {
@@ -88,6 +89,12 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
       setShowToast(true);
       setToastMessage("Failed to bookmark.");
     }
+  };
+  const handleToggleExpand = (answerId) => {
+    setExpandedAnswers((prev) => ({
+      ...prev,
+      [answerId]: !prev[answerId], // Toggle the expand state
+    }));
   };
   const totalPages = Math.ceil(answers.length / PAGE_SIZE);
   const paginatedAnswers = answers.slice(
@@ -188,10 +195,19 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
                 <span
                   className="question-card"
                   dangerouslySetInnerHTML={{
-                    __html:
-                      answer.content.split(" ").slice(0, 20).join(" ") + "...",
+                    __html: expandedAnswers[answer._id]
+                      ? answer.content // Show full content if expanded
+                      : answer.content.split(" ").slice(0, 20).join(" ") +
+                        "...",
                   }}
                 />
+                <Button
+                  variant="link"
+                  className="read-more-btn"
+                  onClick={() => handleToggleExpand(answer._id)}
+                >
+                  {expandedAnswers[answer._id] ? "Read Less" : "Read More"}
+                </Button>
               </Card.Text>
               <div className="d-flex justify-content-between align-items-center mt-3">
                 <small>
