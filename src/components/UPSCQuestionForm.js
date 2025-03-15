@@ -133,11 +133,12 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
   return (
     <Form>
       {/* Subject Selection */}
-      <Form.Group className="mb-3 d-flex align-items-center justify-content-between">
+      <Form.Group className="mb-3 d-flex align-items-center justify-content-between flex-wrap">
         <DropdownButton
           title={subject}
           variant="outline-primary"
           onSelect={(eventKey) => setSubject(eventKey)}
+          className="mb-2 mb-md-0" // ✅ Add bottom margin on small screens
         >
           {upscSubjects.map((subj) => (
             <Dropdown.Item key={subj} eventKey={subj}>
@@ -146,7 +147,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
           ))}
         </DropdownButton>
         {/* Start/Stop Timer Button & Timer Display */}
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 mt-2 mt-md-0">
           <Button
             variant={isRunning ? "outline-danger" : "outline-success"}
             onClick={toggleTimer}
@@ -196,10 +197,15 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
         <Form.Label>Question</Form.Label>
         <Form.Control
           as="textarea"
-          rows={2}
+          rows={2} // ✅ Default height
           placeholder="Write or edit your question here"
           value={question}
-          onChange={(e) => setQuestion(e.target.value)}
+          onChange={(e) => {
+            setQuestion(e.target.value);
+            e.target.style.height = "auto"; // ✅ Reset height first
+            e.target.style.height = e.target.scrollHeight + "px"; // ✅ Expand dynamically
+          }}
+          style={{ minHeight: "50px", overflowY: "auto" }} // ✅ Prevent infinite expansion
         />
       </Form.Group>
 

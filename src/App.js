@@ -18,7 +18,6 @@ const App = () => {
   const [filterType, setFilterType] = useState("all");
   const [mode, setMode] = useState("question"); // 🔹 Now mode is in App.js
   const [refresh, setRefresh] = useState(1);
-
   return (
     <GoogleOAuthProvider clientId="590318971789-rvsf8okm3ntgnei74ckk35i5fi4fjqb6.apps.googleusercontent.com">
       <AuthProvider>
@@ -69,7 +68,15 @@ const App = () => {
                   />
                 }
               />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProfilePage
+                    selectedCategory={selectedCategory}
+                    mode={mode}
+                  />
+                }
+              />
               <Route path="/group" element={<Group />} />
               <Route path="/groupqna/" element={<GroupQuestions />} />
               <Route path="/bookmark" element={<BookmarkPage />} />

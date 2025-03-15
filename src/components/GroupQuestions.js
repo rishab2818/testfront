@@ -127,21 +127,23 @@ const GroupQuestions = () => {
                         </Button>
                       </Card.Text>
 
-                      <Card.Text className="d-flex justify-content-between align-items-center">
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            color: "#777",
-                            fontSize: "1rem",
-                          }}
+                      <Card.Text className="d-flex align-items-center justify-content-between mt-3 flex-wrap">
+                        <small
+                          className="text-muted"
+                          style={{ flex: 1, minWidth: "150px" }}
                         >
                           Author: {ans.author} | ❤️ {ans.likes}
-                        </span>
-
+                        </small>
                         {user && (
                           <Button
                             variant="outline-primary"
                             size="sm"
+                            className="ms-2 px-2 py-1"
+                            style={{
+                              fontSize: "0.8rem",
+                              whiteSpace: "nowrap",
+                              minWidth: "100px",
+                            }}
                             onClick={() =>
                               handleBookmark(
                                 ans._id,

@@ -27,21 +27,22 @@ const NEWS_CATEGORIES = [
 const CategoryFilter = ({ setSelectedCategory, ctype }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCategory, setShowCategory] = useState("All");
+
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setShowCategory(category); // Update dropdown button text
+    setShowCategory(category); // Update category display
   };
-  // 🔹 Change categories based on mode (ctype)
+
   const categories = ctype === "question" ? UPSC_CATEGORIES : NEWS_CATEGORIES;
 
   return (
-    <div className="my-4">
+    <div className="my-4 text-center">
       {/* Large Screens: Buttons */}
       <div className="d-none d-md-flex gap-2 flex-wrap justify-content-center">
         {categories.map((category) => (
           <Button
             key={category}
-            variant="outline-primary"
+            variant={showCategory === category ? "primary" : "outline-primary"}
             onClick={() => handleCategorySelect(category)}
           >
             {category}

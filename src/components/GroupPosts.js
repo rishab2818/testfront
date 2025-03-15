@@ -23,6 +23,8 @@ const GroupPosts = ({ selectedGroup, addedquestion }) => {
     }
   }, [selectedGroup, addedquestion]);
 
+  console.log(posts, "posts");
+
   return (
     <Row className="mt-4">
       {loading ? (
@@ -41,6 +43,8 @@ const GroupPosts = ({ selectedGroup, addedquestion }) => {
                 <Card className="cursor-pointer">
                   <Card.Body>
                     <Card.Title>{post.title}</Card.Title>
+
+                    <Card.Text>Category: {post.category.join(", ")}</Card.Text>
                   </Card.Body>
                 </Card>
               </Link>

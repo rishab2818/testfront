@@ -19,9 +19,8 @@ import {
   Col,
 } from "react-bootstrap";
 import "./Profile.css"; // Import the CSS file
-
 const includePrivate = true;
-const Profile = () => {
+const Profile = ({ selectedCategory, mode }) => {
   const { user } = useContext(AuthContext);
   const googleId = user?.googleId;
   const [answers, setAnswers] = useState([]);
@@ -41,6 +40,11 @@ const Profile = () => {
   const answersPerPage = 5;
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [filteredcategory, setfilteredcategory] = useState([]);
+  const [loadingAnswers, setLoadingAnswers] = useState(true);
+
+  const type = mode === "question" ? "upsc" : "news";
+  const categories = selectedCategory;
   const handleShowEditModal = () => {
     setEditProfile({
       description: profile?.description || "",
@@ -112,12 +116,26 @@ const Profile = () => {
       setToastMessage("❌ Failed to delete answer: " + err.message);
     }
   };
+  useEffect(() => {
+    const filtered = answers.filter(
+      (item) =>
+        item.type === type &&
+        (selectedCategory === "All" || item.category.includes(selectedCategory))
+    );
+    setfilteredcategory(filtered);
+    setLoadingAnswers(false);
+  }, [mode, selectedCategory, answers]);
   const indexOfLastAnswer = currentPage * answersPerPage;
   const indexOfFirstAnswer = indexOfLastAnswer - answersPerPage;
-  const currentAnswers = answers.slice(indexOfFirstAnswer, indexOfLastAnswer);
+
+  const currentAnswers = filteredcategory.slice(
+    indexOfFirstAnswer,
+    indexOfLastAnswer
+  );
 
   const nextPage = () => {
-    if (indexOfLastAnswer < answers.length) setCurrentPage(currentPage + 1);
+    if (indexOfLastAnswer < filteredcategory.length)
+      setCurrentPage(currentPage + 1);
   };
 
   const prevPage = () => {
@@ -207,7 +225,9 @@ const Profile = () => {
 
       {/* Answers Section */}
       <h2 className="text-center">Answers by {profile?.name}</h2>
-      {answers.length === 0 ? (
+      {loadingAnswers ? (
+        <Spinner animation="border" className="d-block mx-auto mt-5" />
+      ) : filteredcategory.length === 0 ? (
         <h2 className="text-center mt-5">No answers found</h2>
       ) : (
         <>
@@ -287,18 +307,20 @@ const Profile = () => {
               Previous
             </Button>
             <span className="mx-3">
-              Page {currentPage} of {Math.ceil(answers.length / answersPerPage)}
+              Page {currentPage} of{" "}
+              {Math.ceil(filteredcategory.length / answersPerPage)}
             </span>
             <Button
               variant="outline-secondary"
               onClick={nextPage}
-              disabled={indexOfLastAnswer >= answers.length}
+              disabled={indexOfLastAnswer >= filteredcategory.length}
             >
               Next
             </Button>
           </div>
         </>
       )}
+
       {/* Edit Profile Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
         <Modal.Header closeButton>

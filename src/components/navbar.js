@@ -56,14 +56,20 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
                 <>
                   <li className="nav-item">
                     <Link to="/group">
-                      <button className="btn btn-dark mx-2 btn-light">
+                      <button
+                        className="btn btn-dark mx-2 btn-light"
+                        onClick={() => setIsNavCollapsed(true)}
+                      >
                         Group
                       </button>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/bookmark">
-                      <button className="btn btn-dark mx-2 btn-light">
+                      <button
+                        className="btn btn-dark mx-2 btn-light"
+                        onClick={() => setIsNavCollapsed(true)}
+                      >
                         Bookmarks
                       </button>
                     </Link>
@@ -75,8 +81,11 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
               {user && (
                 <li className="nav-item">
                   <button
-                    className="btn btn btn-dark mx-2 btn-light"
-                    onClick={() => setShowModal(true)} // Open modal
+                    className="btn btn-dark mx-2 btn-light"
+                    onClick={() => {
+                      setShowModal(true);
+                      setIsNavCollapsed(true);
+                    }}
                   >
                     {mode === "question" ? "📝 Add Question" : "📝 Add Article"}
                   </button>
@@ -101,6 +110,7 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
                       <Link
                         to="/profile"
                         className="navbar-text text-white me-2 text-decoration-none"
+                        onClick={() => setIsNavCollapsed(true)}
                       >
                         Welcome, {user.name}
                       </Link>
@@ -114,7 +124,10 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
 
                     <button
                       className="btn btn-outline-danger btn-light mx-2"
-                      onClick={logout}
+                      onClick={() => {
+                        logout();
+                        setIsNavCollapsed(true);
+                      }}
                     >
                       Logout
                     </button>
