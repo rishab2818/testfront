@@ -66,7 +66,7 @@ const NewsForm = ({ userId, name, handleClose }) => {
       const response = await createPostWithAnswer(payload); // ✅ Call API function
       setToastMessage("Submitted Successfully!");
       setShowToast(true);
-      console.log("Response:", response);
+
       setTitle("");
       setAnswer("");
       setCategories([]);

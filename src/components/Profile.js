@@ -18,6 +18,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { Tooltip } from "react-tooltip";
 import "./Profile.css"; // Import the CSS file
 import "./image.css"; // Import the CSS file
 const includePrivate = true;
@@ -84,7 +85,7 @@ const Profile = ({ selectedCategory, mode }) => {
 
   useEffect(() => {
     const loadAuthorDetails = async () => {
-      if (!googleId) return;
+      if (!googleId || !user._id) return;
 
       try {
         const [answerData, profileData] = await Promise.all([
@@ -101,7 +102,7 @@ const Profile = ({ selectedCategory, mode }) => {
     };
 
     loadAuthorDetails();
-  }, []);
+  }, [googleId]);
 
   const handleDeleteAnswer = async (answerId) => {
     try {
@@ -287,7 +288,50 @@ const Profile = ({ selectedCategory, mode }) => {
                 </div>
                 <div className="d-flex justify-content-between align-items-center mt-2">
                   <small>
-                    ❤️ {answer.likedBy?.filter(Boolean).length || 0} Likes
+                    ❤️ {answer.likes} Likes | ⭐{" "}
+                    <span
+                      data-tooltip-id="ratingTooltip"
+                      data-tooltip-place="top"
+                      style={{
+                        cursor: "pointer",
+                        textDecoration: "underline dotted",
+                      }}
+                    >
+                      {answer?.ratings?.totalVotes === 0 ||
+                      answer?.ratings?.overallRating == null
+                        ? "NA"
+                        : (
+                            answer.ratings.overallRating /
+                            answer.ratings.totalVotes
+                          ).toFixed(1)}
+                    </span>
+                    <Tooltip id="ratingTooltip">
+                      <div>
+                        <p>
+                          📚 Structure Clarity:{" "}
+                          {answer?.ratings?.structureClarity ?? "NA"}
+                        </p>
+                        <p>
+                          ✅ Factual Accuracy:{" "}
+                          {answer?.ratings?.factualAccuracy ?? "NA"}
+                        </p>
+                        <p>
+                          🎤 Presentation:{" "}
+                          {answer?.ratings?.presentation ?? "NA"}
+                        </p>
+                        <p>
+                          🔍 Depth of Analysis:{" "}
+                          {answer?.ratings?.depthOfAnalysis ?? "NA"}
+                        </p>
+                        <p>
+                          🎯 Relevance to Question:{" "}
+                          {answer?.ratings?.relevanceToQuestion ?? "NA"}
+                        </p>
+                        <p>
+                          Total Votes: {answer?.ratings?.totalVotes ?? "NA"}
+                        </p>
+                      </div>
+                    </Tooltip>
                   </small>
                   <Button
                     variant="outline-primary"

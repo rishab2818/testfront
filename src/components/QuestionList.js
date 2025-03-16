@@ -9,7 +9,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 9;
+  const postsPerPage = 6;
   const { user } = useContext(AuthContext); // ✅ Access logged-in user
   useEffect(() => {
     const loadQuestions = async () => {
@@ -21,7 +21,6 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
         if (filterType === "all") {
           data = await fetchQuestionsAPI(mode);
         } else {
-          console.log("herer");
           data = await fetchFollowerQuestionsAPI(mode, user?._id);
           //update backend..to bored rite now
           const filteredData = data.filter((item) =>
@@ -75,7 +74,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
 
   return (
     <div className="container mt-4">
-      <Row className="g-4">
+      <Row className="g-3">
         {currentPosts.map((q) => (
           <Col key={q._id} xs={12} md={6} lg={4}>
             <Card className="shadow-sm d-flex flex-column h-100">
@@ -135,7 +134,14 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
                         >
                           {q.topAnswer.author}
                         </Link>{" "}
-                        | ❤️ {q.topAnswer.likes}
+                        | ❤️ {q.topAnswer.likes} | ⭐{" "}
+                        {q.topAnswer?.ratings?.totalVotes === 0 ||
+                        q.topAnswer?.ratings?.overallRating == null
+                          ? "NA"
+                          : (
+                              q.topAnswer.ratings.overallRating /
+                              q.topAnswer.ratings.totalVotes
+                            ).toFixed(1)}
                       </span>
                     </Card.Text>
                   </>

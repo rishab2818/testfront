@@ -252,7 +252,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       </Form.Group>
 
       {/* Privacy Toggle */}
-      <Form.Group className="mb-3">
+      <Form.Group className="mb-3 mt-3">
         <InputGroup>
           <InputGroup.Text>Privacy:</InputGroup.Text>
           <Button

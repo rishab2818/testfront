@@ -6,11 +6,11 @@ const UPSC_CATEGORIES = [
   "History",
   "Geography",
   "Polity",
-  "Economy",
-  "Science & Technology",
+  "Economics",
+  "Science & Tech",
   "Environment",
   "International Relations",
-  "Ethics & Integrity",
+  "Ethics",
 ];
 
 const NEWS_CATEGORIES = [

@@ -8,11 +8,12 @@ import {
   fetchQuestionDetailsAPI,
   fetchRelatedQuestionsAPI,
   likeAnswerAPI,
-  reviewAnswerAPI,
   toggleBookmarkAPI,
 } from "../utils/api";
 import AuthContext from "../context/AuthContext";
 import { Toast, ToastContainer } from "react-bootstrap";
+import RatingModal from "./RatingModal";
+import { Tooltip } from "react-tooltip";
 import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; //  Show 5 answers per page
 const CHAR_LIMIT = 250; //  Limit initial content display
@@ -31,14 +32,18 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
   const [toastMessage, setToastMessage] = useState("");
   const [newAnswer, setNewAnswer] = useState(false);
   const [bookmarkedAnswers, setBookmarkedAnswers] = useState([]); // Track bookmarks
-
+  const [isModalOpen, setModalOpen] = useState(false); //Rating modal
+  const [ratingId, setRatingId] = useState({
+    userid: null,
+    answerId: null,
+  });
   useEffect(() => {
     const loadQuestionDetails = async () => {
       setLoading(true);
       try {
         const data = await fetchQuestionDetailsAPI(id);
         setQuestion(data);
-        console.log("question is", question);
+
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -57,7 +62,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
 
       try {
         const data = await fetchRelatedQuestionsAPI(mode);
-        console.log(question, question?._id);
+
         const filteredData = data.filter((item) => item._id !== question._id);
         setRelatedQuestions(filteredData);
       } catch (err) {
@@ -88,19 +93,6 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
     }
   };
 
-  const handleReview = async (questionText, answerText) => {
-    const question = questionText;
-    const answer = answerText;
-    try {
-      const response = await reviewAnswerAPI(question, answer);
-      setToastMessage("Review complete..");
-      setShowToast(true);
-    } catch (err) {
-      setToastMessage("Failed to review answer. Try again later..");
-      setShowToast(true);
-    }
-  };
-
   const toggleExpand = (answerId) => {
     setExpandedAnswers((prev) => ({
       ...prev,
@@ -125,6 +117,18 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
       setToastMessage("Failed to bookmark.");
     }
   };
+
+  const handleOpenModal = (answerId) => {
+    setRatingId({ user: null, answerId: answerId });
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => setModalOpen(false);
+  const handleRatingSubmit = () => {
+    setShowToast(true);
+    setToastMessage("Rating Submitted.");
+  };
+
   const paginatedAnswers = question?.answers.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
@@ -194,7 +198,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                           style={{
                             fontWeight: 500,
                             color: "#777",
-                            fontSize: "1 rem",
+                            fontSize: "1rem",
                           }}
                         >
                           Author:{" "}
@@ -212,36 +216,89 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                           >
                             {ans.author}
                           </Link>{" "}
-                          | ❤️ {ans.likes}
+                          | ❤️ {ans.likes} | ⭐{" "}
+                          <span
+                            data-tooltip-id="ratingTooltip"
+                            data-tooltip-place="top"
+                            style={{
+                              cursor: "pointer",
+                              textDecoration: "underline dotted",
+                            }}
+                          >
+                            {ans?.ratings?.totalVotes === 0 ||
+                            ans?.ratings?.overallRating == null
+                              ? "NA"
+                              : (
+                                  ans.ratings.overallRating /
+                                  ans.ratings.totalVotes
+                                ).toFixed(1)}
+                          </span>
+                          <Tooltip id="ratingTooltip">
+                            <div>
+                              <p>
+                                Structure Clarity:{" "}
+                                {ans?.ratings?.structureClarity ?? "NA"}
+                              </p>
+                              <p>
+                                Factual Accuracy:{" "}
+                                {ans?.ratings?.factualAccuracy ?? "NA"}
+                              </p>
+                              <p>
+                                Presentation:{" "}
+                                {ans?.ratings?.presentation ?? "NA"}
+                              </p>
+                              <p>
+                                Depth of Analysis:{" "}
+                                {ans?.ratings?.depthOfAnalysis ?? "NA"}
+                              </p>
+                              <p>
+                                Relevance to Question:{" "}
+                                {ans?.ratings?.relevanceToQuestion ?? "NA"}
+                              </p>
+                              <p>
+                                Total Votes: {ans?.ratings?.totalVotes ?? "NA"}
+                              </p>
+                            </div>
+                          </Tooltip>
                         </span>
                       </Card.Text>
 
                       {user && (
                         <>
-                          <div className="d-flex justify-content-between align-items-center mt-2">
-                            <Button
-                              variant="outline-danger"
-                              size="sm"
-                              className="me-2"
-                              onClick={() => handleLike(ans._id)}
-                            >
-                              <FaHeart /> Like
-                            </Button>
-                            <Button
-                              variant="outline-primary"
-                              size="sm"
-                              onClick={() =>
-                                handleBookmark(
-                                  ans._id,
-                                  user._id,
-                                  setBookmarkedAnswers
-                                )
-                              }
-                            >
-                              🔖 Bookmark
-                            </Button>
-                          </div>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            className="me-2"
+                            onClick={() => handleLike(ans._id)}
+                          >
+                            <FaHeart /> Like
+                          </Button>
                         </>
+                      )}
+                      {user && (
+                        <div className="d-flex justify-content-between align-items-center mt-2">
+                          <Button
+                            variant="outline-success"
+                            size="sm"
+                            className="mt-2"
+                            onClick={() => handleOpenModal(ans._id)}
+                          >
+                            ⭐ Rate Answer
+                          </Button>
+                          <Button
+                            variant="outline-primary"
+                            size="sm"
+                            onClick={() =>
+                              handleBookmark(
+                                ans._id,
+                                user._id,
+                                setBookmarkedAnswers
+                              )
+                            }
+                          >
+                            🔖 Bookmark
+                          </Button>
+                        </div>
                       )}
                     </Card.Body>
                   </Card>
@@ -305,6 +362,12 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
           <Toast.Body>{toastMessage}</Toast.Body>
         </Toast>
       </ToastContainer>
+      <RatingModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleRatingSubmit}
+        ratingId={ratingId}
+      />
     </div>
   );
 };

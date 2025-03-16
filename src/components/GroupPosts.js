@@ -23,8 +23,6 @@ const GroupPosts = ({ selectedGroup, addedquestion }) => {
     }
   }, [selectedGroup, addedquestion]);
 
-  console.log(posts, "posts");
-
   return (
     <Row className="mt-4">
       {loading ? (

@@ -13,5 +13,4 @@ export const handleSuccess = async (credentialResponse, login) => {
 export const handleLogout = (logout) => {
   googleLogout();
   logout();
-  console.log("User logged out.");
 };

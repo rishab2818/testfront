@@ -11,6 +11,7 @@ import AuthContext from "../context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AuthorProfile.css";
 import ToastMessage from "./ToastMessage";
+import { Tooltip } from "react-tooltip";
 import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; // 5 answers per page
 const AuthorProfile = ({ mode, selectedCategory }) => {
@@ -38,7 +39,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
           fetchAuthorAnswersAPI(authorObject.userId, includePrivate),
           fetchProfilebyId(authorObject.userId),
         ]);
-        console.log(answerData, "this is data");
+
         const filteredAnswers = answerData.answers.filter(
           (answer) =>
             (selectedCategory === "All" ||
@@ -64,10 +65,8 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
   const handleFollow = async () => {
     if (!profile) return;
     try {
-      console.log(isFollowing);
       const result = await toggleFollowAPI(profile._id, userId);
       setIsFollowing(result.data.following);
-      console.log(isFollowing, result, "asfdas");
     } catch (error) {
       console.error("Error toggling follow status:", error.message);
     }
@@ -211,7 +210,47 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
               </Card.Text>
               <div className="d-flex justify-content-between align-items-center mt-3">
                 <small>
-                  ❤️ {answer.likedBy?.filter(Boolean).length || 0} Likes
+                  ❤️ {answer.likes} Likes | ⭐{" "}
+                  <span
+                    data-tooltip-id="ratingTooltip"
+                    data-tooltip-place="top"
+                    style={{
+                      cursor: "pointer",
+                      textDecoration: "underline dotted",
+                    }}
+                  >
+                    {answer?.ratings?.totalVotes === 0 ||
+                    answer?.ratings?.overallRating == null
+                      ? "NA"
+                      : (
+                          answer.ratings.overallRating /
+                          answer.ratings.totalVotes
+                        ).toFixed(1)}
+                  </span>
+                  <Tooltip id="ratingTooltip">
+                    <div>
+                      <p>
+                        📚 Structure Clarity:{" "}
+                        {answer?.ratings?.structureClarity ?? "NA"}
+                      </p>
+                      <p>
+                        ✅ Factual Accuracy:{" "}
+                        {answer?.ratings?.factualAccuracy ?? "NA"}
+                      </p>
+                      <p>
+                        🎤 Presentation: {answer?.ratings?.presentation ?? "NA"}
+                      </p>
+                      <p>
+                        🔍 Depth of Analysis:{" "}
+                        {answer?.ratings?.depthOfAnalysis ?? "NA"}
+                      </p>
+                      <p>
+                        🎯 Relevance to Question:{" "}
+                        {answer?.ratings?.relevanceToQuestion ?? "NA"}
+                      </p>
+                      <p>Total Votes: {answer?.ratings?.totalVotes ?? "NA"}</p>
+                    </div>
+                  </Tooltip>
                 </small>
                 {user && (
                   <Button

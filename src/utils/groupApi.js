@@ -82,7 +82,6 @@ export const fetchGroupPosts = async (groupId) => {
 };
 
 export const addAdminToGroup = async (groupId, emails) => {
-  console.log(emails, typeof emails);
   const response = await axios.post(
     `${API_BASE_URL}/${groupId}/add-admins`,
     { emails },

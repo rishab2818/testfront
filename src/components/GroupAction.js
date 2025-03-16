@@ -114,7 +114,6 @@ const GroupActions = ({
 
   const handleAddAdmin = async () => {
     try {
-      console.log(emails);
       await addAdminToGroup(selectedGroup, emails.split(","));
       setShowToast(true);
       setToastMessage("Admin added successfully!");

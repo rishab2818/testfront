@@ -63,7 +63,6 @@ export const fetchQuestionsAPI = async (mode) => {
   }
 };
 export const fetchFollowerQuestionsAPI = async (mode, userId) => {
-  console.log(`Fetching ${mode} questions for following list of:`, userId);
   try {
     const category = mode === "question" ? "upsc" : "news"; // ✅ Determine type dynamically
     const response = await axios.get(
@@ -90,7 +89,6 @@ export const fetchQuestionDetailsAPI = async (id) => {
 };
 
 export const fetchRelatedQuestionsAPI = async (mode) => {
-  console.log("mode", mode);
   try {
     const category = mode === "question" ? "upsc" : "news";
     const response = await axios.get(
@@ -153,7 +151,6 @@ export const likeAnswerAPI = async (answerId, googleId) => {
 };
 
 export const fetchAuthorAnswersAPI = async (userId, includePrivate) => {
-  console.log("my user id ", userId);
   const response = await axios.get(
     `${API_BASE_URL}/answers/answers?userId=${userId}&includePrivate=${includePrivate}`
   );
@@ -196,7 +193,6 @@ export const reviewAnswerAPI = async (question, answer) => {
 };
 
 export const fetchProfileAPI = async (googleId) => {
-  console.log(googleId, "gid");
   return axios.get(`${API_BASE_URL}/profile/user/${googleId}`);
 };
 
@@ -215,12 +211,10 @@ export const updateProfileAPI = async (googleId, profileData) => {
 };
 
 export const fetchProfilebyId = async (userId) => {
-  console.log(userId, "gid");
   return axios.get(`${API_BASE_URL}/profile/userId/${userId}`);
 };
 
 export const toggleFollowAPI = async (authorId, userId) => {
-  console.log("authord", authorId, userId);
   const token = localStorage.getItem("token");
   if (!token) throw new Error("Unauthorized: No token found");
 
@@ -263,8 +257,6 @@ export const fetchGroupQuestionDetailsAPI = async (id) => {
 };
 
 export const toggleBookmarkAPI = async (userId, answerId) => {
-  console.log("Bookmarking Answer:", answerId, "for User:", userId);
-
   const token = localStorage.getItem("token");
   if (!token) throw new Error("Unauthorized: No token found");
 
@@ -286,4 +278,18 @@ export const getBookmarksAPI = async (userId) => {
     headers: { Authorization: `Bearer ${token}` },
     withCredentials: true,
   });
+};
+export const submitRatingAPI = async (answerId, ratings) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/ratings/${answerId}`,
+      ratings,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Failed to submit rating.");
+  }
 };

@@ -9,11 +9,10 @@ const GroupList = ({ userId, selectedGroup, setSelectedGroup, fetchGroup }) => {
     const loadGroups = async () => {
       try {
         const data = await fetchUserGroups(userId);
-        console.log("Fetched groups:", data);
+
         setGroups(data);
         if (data.length > 0) {
           setSelectedGroup(data[0]._id);
-          console.log("Default selected group:", data[0]._id);
         }
       } catch (error) {
         console.error("Error fetching groups:", error);
@@ -24,7 +23,6 @@ const GroupList = ({ userId, selectedGroup, setSelectedGroup, fetchGroup }) => {
 
   // Function to handle group selection change
   const handleGroupChange = (e) => {
-    console.log("Selected group changed:", e.target.value);
     setSelectedGroup(e.target.value);
   };
 

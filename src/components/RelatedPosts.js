@@ -84,7 +84,13 @@ const RelatedPosts = ({ allQuestions, selectedCategory }) => {
                     style={{
                       fontWeight: 500,
                       color: "#777",
-                      fontSize: "0.85 rem",
+                      fontSize: "0.85rem", // Fixed space issue in fontSize
+                      display: "inline-flex", // Keep everything in one line
+                      alignItems: "center",
+                      gap: "5px", // Adds spacing between elements
+                      flexWrap: "nowrap", // Prevents wrapping
+                      overflow: "hidden", // Prevents long names from breaking layout
+                      textOverflow: "ellipsis",
                     }}
                   >
                     Author:{" "}
@@ -95,14 +101,24 @@ const RelatedPosts = ({ allQuestions, selectedCategory }) => {
                       state={{ author: q.topAnswer }}
                       className="text-decoration-none"
                       style={{
-                        color: "inherit", // Inherit the color from the parent span
-                        fontWeight: "inherit", // Inherit the font weight
-                        fontSize: "inherit", // Inherit the font size
+                        color: "inherit",
+                        fontWeight: "inherit",
+                        fontSize: "inherit",
+                        whiteSpace: "nowrap", // Prevents author name from breaking
+                        overflow: "hidden",
+                        textOverflow: "ellipsis", // Adds "..." if too long
                       }}
                     >
                       {q.topAnswer.author}
                     </Link>{" "}
-                    | ❤️ {q.topAnswer.likes}
+                    | ❤️ {q.topAnswer.likes} | ⭐{" "}
+                    {q.topAnswer?.ratings?.totalVotes === 0 ||
+                    q.topAnswer?.ratings?.overallRating == null
+                      ? "NA"
+                      : (
+                          q.topAnswer.ratings.overallRating /
+                          q.topAnswer.ratings.totalVotes
+                        ).toFixed(1)}
                   </span>
                 </Card.Text>
               </>

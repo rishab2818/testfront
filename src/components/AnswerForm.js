@@ -13,7 +13,6 @@ const AnswerForm = ({
   setNewAnswer,
   newAnswer,
 }) => {
-  console.log(question._id, "question");
   const { user, token } = useContext(AuthContext); // ✅ Get user & token from context
   const [answer, setAnswer] = useState("");
   const [isPublic, setIsPublic] = useState(true);

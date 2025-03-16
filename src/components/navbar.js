@@ -13,7 +13,7 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === "question" ? "article" : "question"));
   };
-  console.log(mode);
+
   // Toggle Navbar Collapse
 
   const handleNavCollapse = () => {
