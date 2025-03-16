@@ -94,23 +94,38 @@ const RelatedPosts = ({ allQuestions, selectedCategory }) => {
                     }}
                   >
                     Author:{" "}
-                    <Link
-                      to={`/author/${q.topAnswer.userId}/${
-                        user?.userId === q.topAnswer.userId
-                      }`}
-                      state={{ author: q.topAnswer }}
-                      className="text-decoration-none"
-                      style={{
-                        color: "inherit",
-                        fontWeight: "inherit",
-                        fontSize: "inherit",
-                        whiteSpace: "nowrap", // Prevents author name from breaking
-                        overflow: "hidden",
-                        textOverflow: "ellipsis", // Adds "..." if too long
-                      }}
-                    >
-                      {q.topAnswer.author}
-                    </Link>{" "}
+                    {q.topAnswer.author === "Anonymous" ? (
+                      <span
+                        style={{
+                          color: "inherit",
+                          fontWeight: "inherit",
+                          fontSize: "inherit",
+                          whiteSpace: "nowrap", // Prevents text from breaking
+                          overflow: "hidden",
+                          textOverflow: "ellipsis", // Adds "..." if too long
+                        }}
+                      >
+                        Anonymous
+                      </span> // ✅ Plain text if Anonymous
+                    ) : (
+                      <Link
+                        to={`/author/${q.topAnswer.userId}/${
+                          user?.userId === q.topAnswer.userId
+                        }`}
+                        state={{ author: q.topAnswer }}
+                        className="text-decoration-none"
+                        style={{
+                          color: "inherit",
+                          fontWeight: "inherit",
+                          fontSize: "inherit",
+                          whiteSpace: "nowrap", // Prevents author name from breaking
+                          overflow: "hidden",
+                          textOverflow: "ellipsis", // Adds "..." if too long
+                        }}
+                      >
+                        {q.topAnswer.author}
+                      </Link>
+                    )}{" "}
                     | ❤️ {q.topAnswer.likes} | ⭐{" "}
                     {q.topAnswer?.ratings?.totalVotes === 0 ||
                     q.topAnswer?.ratings?.overallRating == null

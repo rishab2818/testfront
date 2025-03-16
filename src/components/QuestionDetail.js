@@ -202,20 +202,32 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                           }}
                         >
                           Author:{" "}
-                          <Link
-                            to={`/author/${ans.userId}/${
-                              user?.userId === ans.userId
-                            }`}
-                            state={{ author: ans }}
-                            className="text-decoration-none"
-                            style={{
-                              color: "inherit", // Inherit the color from the parent span
-                              fontWeight: "inherit", // Inherit the font weight
-                              fontSize: "inherit", // Inherit the font size
-                            }}
-                          >
-                            {ans.author}
-                          </Link>{" "}
+                          {ans.author === "Anonymous" ? (
+                            <span
+                              style={{
+                                color: "inherit",
+                                fontWeight: "inherit",
+                                fontSize: "inherit",
+                              }}
+                            >
+                              Anonymous
+                            </span> // ✅ Plain text if Anonymous
+                          ) : (
+                            <Link
+                              to={`/author/${ans.userId}/${
+                                user?.userId === ans.userId
+                              }`}
+                              state={{ author: ans }}
+                              className="text-decoration-none"
+                              style={{
+                                color: "inherit", // Inherit the color from the parent span
+                                fontWeight: "inherit", // Inherit the font weight
+                                fontSize: "inherit", // Inherit the font size
+                              }}
+                            >
+                              {ans.author}
+                            </Link>
+                          )}{" "}
                           | ❤️ {ans.likes} | ⭐{" "}
                           <span
                             data-tooltip-id="ratingTooltip"

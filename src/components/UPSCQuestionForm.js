@@ -34,6 +34,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState("00:00:00");
   const [isRunning, setIsRunning] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const quillRef = useRef(null);
 
   const generateQuestion = async () => {
@@ -84,7 +85,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       type: "upsc",
       content: answer,
       isPrivate: !isPublic,
-      author: name,
+      author: isAnonymous ? "Anonymous" : name,
     };
 
     try {
@@ -267,6 +268,15 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
             </Button>
           </Button>
         </InputGroup>
+      </Form.Group>
+      <Form.Group className="mb-3 d-flex align-items-center gap-2">
+        <Form.Label>Post as Anonymous:</Form.Label>
+        <Form.Check
+          type="switch"
+          id="anonymous-switch"
+          checked={isAnonymous}
+          onChange={() => setIsAnonymous(!isAnonymous)}
+        />
       </Form.Group>
 
       {/* Submit Button */}

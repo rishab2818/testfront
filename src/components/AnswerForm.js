@@ -19,6 +19,7 @@ const AnswerForm = ({
   const [loading, setLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const quillRef = useRef(null);
   // ✅ Handle Answer Submission
   const handleSubmit = async () => {
@@ -39,7 +40,7 @@ const AnswerForm = ({
       content: answer, // ✅ Answer content
       isPrivate: sourcePrivate ? sourcePrivate : !isPublic, // ✅ Public → false, Private → true
       _id: user._id, // ✅ User ID from context
-      author: user.name, // ✅ Author name from context
+      author: isAnonymous ? "Anonymous" : user.name,
     };
 
     try {
@@ -128,6 +129,15 @@ const AnswerForm = ({
                 </Button>
               </InputGroup>
             )}
+          </Form.Group>
+          <Form.Group className="mb-3 d-flex align-items-center gap-2">
+            <Form.Label>Post as Anonymous:</Form.Label>
+            <Form.Check
+              type="switch"
+              id="anonymous-switch"
+              checked={isAnonymous}
+              onChange={() => setIsAnonymous(!isAnonymous)}
+            />
           </Form.Group>
 
           {/* Submit Button */}

@@ -120,20 +120,32 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
                         }}
                       >
                         Author:{" "}
-                        <Link
-                          to={`/author/${q.topAnswer.userId}/${
-                            user?.userId === q.topAnswer.userId
-                          }`}
-                          state={{ author: q.topAnswer }}
-                          className="text-decoration-none"
-                          style={{
-                            color: "inherit", // Inherit the color from the parent span
-                            fontWeight: "inherit", // Inherit the font weight
-                            fontSize: "inherit", // Inherit the font size
-                          }}
-                        >
-                          {q.topAnswer.author}
-                        </Link>{" "}
+                        {q.topAnswer.author === "Anonymous" ? (
+                          <span
+                            style={{
+                              color: "inherit",
+                              fontWeight: "inherit",
+                              fontSize: "inherit",
+                            }}
+                          >
+                            Anonymous
+                          </span> // ✅ Show plain text if Anonymous
+                        ) : (
+                          <Link
+                            to={`/author/${q.topAnswer.userId}/${
+                              user?.userId === q.topAnswer.userId
+                            }`}
+                            state={{ author: q.topAnswer }}
+                            className="text-decoration-none"
+                            style={{
+                              color: "inherit", // Inherit the color from the parent span
+                              fontWeight: "inherit", // Inherit the font weight
+                              fontSize: "inherit", // Inherit the font size
+                            }}
+                          >
+                            {q.topAnswer.author}
+                          </Link>
+                        )}{" "}
                         | ❤️ {q.topAnswer.likes} | ⭐{" "}
                         {q.topAnswer?.ratings?.totalVotes === 0 ||
                         q.topAnswer?.ratings?.overallRating == null

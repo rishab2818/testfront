@@ -48,7 +48,11 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
               (mode === "question" && answer.type === "upsc") ||
               (mode === "article" && answer.type === "news"))
         );
-        setAnswers(filteredAnswers || []);
+        const filteredAnonymous = filteredAnswers.filter(
+          (ans) => ans.author !== "Anonymous"
+        );
+
+        setAnswers(filteredAnonymous || []);
         setProfile(profileData.data || null);
         if (profileData.data) {
           setIsFollowing(profileData.data.followers.includes(userId));
