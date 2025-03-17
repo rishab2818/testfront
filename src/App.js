@@ -13,6 +13,8 @@ import ProfilePage from "./components/Profile";
 import GroupQuestions from "./components/GroupQuestions";
 import Group from "./components/Group";
 import BookmarkPage from "./components/BookmarkPage";
+import AnecdotePage from "./components/AnecdotePage";
+import TopAnswersOfWeek from "./components/TopAnswersofWeek";
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filterType, setFilterType] = useState("all");
@@ -80,6 +82,8 @@ const App = () => {
               <Route path="/group" element={<Group />} />
               <Route path="/groupqna/" element={<GroupQuestions />} />
               <Route path="/bookmark" element={<BookmarkPage />} />
+              <Route path="/anecdote" element={<AnecdotePage />} />
+              <Route path="/week-answer" element={<TopAnswersOfWeek />} />
               {/* ✅ New Route */}
               {/* ✅ Show question details */}
             </Routes>
