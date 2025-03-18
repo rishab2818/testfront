@@ -53,6 +53,16 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
                 Claim Your Coins
               </li>
               <li className="nav-item">
+                <Link to="/prelims">
+                  <button
+                    className="btn btn-dark mx-2 btn-light"
+                    onClick={() => setIsNavCollapsed(true)}
+                  >
+                    Prelims
+                  </button>
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link to="/week-answer">
                   <button
                     className="btn btn-dark mx-2 btn-light"

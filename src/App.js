@@ -15,6 +15,7 @@ import Group from "./components/Group";
 import BookmarkPage from "./components/BookmarkPage";
 import AnecdotePage from "./components/AnecdotePage";
 import TopAnswersOfWeek from "./components/TopAnswersofWeek";
+import PrelimsPage from "./components/PrelimsPage";
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filterType, setFilterType] = useState("all");
@@ -84,6 +85,7 @@ const App = () => {
               <Route path="/bookmark" element={<BookmarkPage />} />
               <Route path="/anecdote" element={<AnecdotePage />} />
               <Route path="/week-answer" element={<TopAnswersOfWeek />} />
+              <Route path="/prelims" element={<PrelimsPage />} />
               {/* ✅ New Route */}
               {/* ✅ Show question details */}
             </Routes>
