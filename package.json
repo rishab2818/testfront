@@ -16,6 +16,7 @@
     "bootstrap": "^5.3.3",
     "jwt-decode": "^4.0.0",
     "lexical": "^0.27.1",
+    "papaparse": "^5.5.2",
     "quill-better-table": "^1.2.10",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.9",
