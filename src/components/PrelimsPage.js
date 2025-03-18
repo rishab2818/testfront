@@ -221,12 +221,19 @@ const PrelimsPage = () => {
 
   return (
     <Container className="mt-4">
-      <h2 className="text-center mb-4">Prelims Voting Page</h2>
+      <h2 className="text-center mb-4">Prelims QnA Section</h2>
       <h6>
-        This page is for presentation sake, its a new requirment will be added
-        in future. This page is non functional, just for sake of presentation
-        only!!!
+        This page is for presentation purposes only. It is a new requirement
+        that will be added in the future. Currently, it is non-functional and
+        exists solely for presentation
       </h6>
+
+      <p>
+        This page will function like other pages—it will appear in bookmarks,
+        groups, and the user profile section. Additionally, when users click on
+        a question, they can provide insights or explanations on why a specific
+        option is correct, similar to how Q&A interactions are handled elsewhere
+      </p>
       {/* Button to Open Modal */}
       <div className="text-center mb-3">
         <Button variant="primary" onClick={() => setShowModal(true)}>
