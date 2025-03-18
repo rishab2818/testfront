@@ -223,9 +223,9 @@ const PrelimsPage = () => {
     <Container className="mt-4">
       <h2 className="text-center mb-4">Prelims Voting Page</h2>
       <h6>
-        This page is just for presentation sake, its a new requirment will be
-        added in future. This page is non functional, just for sake of
-        presentation only!!!
+        This page is for presentation sake, its a new requirment will be added
+        in future. This page is non functional, just for sake of presentation
+        only!!!
       </h6>
       {/* Button to Open Modal */}
       <div className="text-center mb-3">
