@@ -1,16 +1,51 @@
 import { useState } from "react";
-import { Dropdown, Button } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 
 const UPSC_CATEGORIES = [
   "All",
-  "History",
-  "Geography",
-  "Polity",
-  "Economics",
-  "Science & Tech",
-  "Environment",
-  "International Relations",
-  "Ethics",
+  "Ancient History",
+  "Medieval History",
+  "Modern History",
+  "Post-Independence History",
+  "World History",
+  "Physical Geography",
+  "Indian Geography",
+  "World Geography",
+  "Economic Geography",
+  "Indian Polity",
+  "Governance & Public Policy",
+  "Political Theories",
+  "International Law & Organizations",
+  "Indian Economy",
+  "Macroeconomics & Microeconomics",
+  "Banking & Finance",
+  "International Economy",
+  "Space & Defense Technology",
+  "Biotechnology & Health",
+  "Artificial Intelligence & IT",
+  "Basic & Applied Science",
+  "Climate Change",
+  "Biodiversity & Conservation",
+  "Environmental Laws & Treaties",
+  "Disaster Management",
+  "India’s Bilateral Relations",
+  "Global Institutions",
+  "Geopolitical Issues",
+  "Foreign Policies & Agreements",
+  "Ethical Theories",
+  "Public Administration Ethics",
+  "Philosophy & Thinkers",
+  "Case Studies & Real-Life Applications",
+  "Current Affairs",
+  "Government Schemes & Policies",
+  "Social Issues",
+  "Indian Society & Culture",
+  "Internal Security",
+  "Science & Disaster Management",
+  "Indian Art & Culture",
+  "Agriculture & Food Security",
+  "Social Justice & Welfare",
+  "General Life Question",
 ];
 
 const NEWS_CATEGORIES = [
@@ -31,44 +66,35 @@ const CategoryFilter = ({ setSelectedCategory, ctype }) => {
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     setShowCategory(category); // Update category display
+    setShowDropdown(false); // Close dropdown after selection
   };
 
   const categories = ctype === "question" ? UPSC_CATEGORIES : NEWS_CATEGORIES;
 
   return (
     <div className="my-4 text-center">
-      {/* Large Screens: Buttons */}
-      <div className="d-none d-md-flex gap-2 flex-wrap justify-content-center">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={showCategory === category ? "primary" : "outline-primary"}
-            onClick={() => handleCategorySelect(category)}
-          >
-            {category}
-          </Button>
-        ))}
-      </div>
-
-      {/* Small Screens: Dropdown */}
-      <div className="d-md-none text-center">
-        <Dropdown
-          show={showDropdown}
-          onToggle={() => setShowDropdown(!showDropdown)}
+      {/* Dropdown for All Screens */}
+      <Dropdown
+        show={showDropdown}
+        onToggle={() => setShowDropdown(!showDropdown)}
+      >
+        <Dropdown.Toggle variant="primary" className="w-100">
+          {showCategory}
+        </Dropdown.Toggle>
+        <Dropdown.Menu
+          className="w-100"
+          style={{ maxHeight: "300px", overflowY: "auto" }} // Add scrollable menu
         >
-          <Dropdown.Toggle variant="primary">{showCategory}</Dropdown.Toggle>
-          <Dropdown.Menu>
-            {categories.map((category) => (
-              <Dropdown.Item
-                key={category}
-                onClick={() => handleCategorySelect(category)}
-              >
-                {category}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+          {categories.map((category) => (
+            <Dropdown.Item
+              key={category}
+              onClick={() => handleCategorySelect(category)}
+            >
+              {category}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
     </div>
   );
 };

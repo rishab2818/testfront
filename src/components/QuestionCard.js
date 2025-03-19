@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import { Card, Button, Badge, Row, Col, Container } from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
 import { voteQuestion } from "../utils/api";
-import { addPrelimsQuestion } from "../utils/api.js";
+import "./questionmodal.css"; // Import the CSS file
+
 const QuestionCard = ({
   question,
   author,
@@ -31,23 +32,27 @@ const QuestionCard = ({
   };
 
   return (
-    <Card className="mb-4 shadow-sm border-0 rounded-3 bg-white">
-      <Card.Body className="p-4">
+    <Card
+      className="mb-4 shadow-sm border-0 rounded-3 bg-white"
+      style={{ minHeight: "300px" }}
+    >
+      <Card.Body className="p-4 d-flex flex-column">
         {/* Question & Details */}
-        <Card.Title className="fw-bold text-primary">{question}</Card.Title>
+        <Card.Title>{question}</Card.Title>
         <Card.Subtitle className="mb-3 text-muted small">
           <span className="fw-semibold">Created by:</span> {author} |{" "}
           <span className="fw-semibold">Category:</span> {category.join(", ")}
         </Card.Subtitle>
 
         {/* Voting Buttons */}
-        <div className="d-grid gap-3 mt-3">
+        <div className="d-grid gap-3 mt-3 flex-grow-1">
           {Object.keys(options).map((key) => (
             <Button
               key={key}
               variant="outline-primary"
               className="d-flex justify-content-between align-items-center text-start py-2 px-3 rounded-pill vote-button"
               onClick={() => handleVote(key)}
+              style={{ color: "#000000" }} // Set text color to black
             >
               <span className="text-truncate" style={{ maxWidth: "80%" }}>
                 {options[key]}
@@ -60,24 +65,9 @@ const QuestionCard = ({
         {/* Like and Vote Counts (Bottom of the Card) */}
         <Container className="mt-4">
           <Row>
+            <Col xs="auto">❤️ {likes}</Col>
             <Col xs="auto">
-              <Badge
-                bg="white"
-                text="danger"
-                className="px-3 py-2 border border-danger"
-              >
-                ❤️ {likes}
-              </Badge>
-            </Col>
-            <Col xs="auto">
-              <Badge
-                bg="white"
-                text="primary"
-                className="px-3 py-2 border border-primary"
-              >
-                🗳️{" "}
-                {votes.optionA + votes.optionB + votes.optionC + votes.optionD}
-              </Badge>
+              🗳️ {votes.optionA + votes.optionB + votes.optionC + votes.optionD}
             </Col>
           </Row>
         </Container>

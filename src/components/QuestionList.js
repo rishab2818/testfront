@@ -73,7 +73,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container mt-4">
+    <div className="container-fluid mt-4">
       <Row className="g-3">
         {currentPosts.map((q) => (
           <Col key={q._id} xs={12} md={6} lg={4}>

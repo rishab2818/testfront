@@ -38,21 +38,6 @@ const PrelimsPage = () => {
       <Button variant="primary mt-0" onClick={() => setShowModal(true)}>
         +
       </Button>
-      <h2 className="text-center mt-3 mb-4">Prelims QnA Section</h2>
-
-      <h6>
-        This page is for presentation purposes only. It is a new requirement
-        that will be added in the future. Currently, it is non-functional and
-        exists solely for presentation.
-      </h6>
-
-      <p>
-        This page will function like other pages—it will appear in bookmarks,
-        groups, and the user profile section. Additionally, when users click on
-        a question, they can provide insights or explanations on why a specific
-        option is correct, similar to how Q&A interactions are handled
-        elsewhere.
-      </p>
 
       {/* Questions List */}
       <Row>

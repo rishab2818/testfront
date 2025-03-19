@@ -1,25 +1,55 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
-import {
-  Form,
-  Button,
-  Dropdown,
-  DropdownButton,
-  InputGroup,
-} from "react-bootstrap";
+import { Form, Button, Modal, InputGroup } from "react-bootstrap";
 import { createPostWithAnswer } from "../utils/api";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap";
+
 const upscSubjects = [
-  "History",
-  "Geography",
-  "Polity",
-  "Economics",
-  "Science & Tech",
-  "Environment",
-  "International Relations",
-  "Ethics",
+  "Ancient History",
+  "Medieval History",
+  "Modern History",
+  "Post-Independence History",
+  "World History",
+  "Physical Geography",
+  "Indian Geography",
+  "World Geography",
+  "Economic Geography",
+  "Indian Polity",
+  "Governance & Public Policy",
+  "Political Theories",
+  "International Law & Organizations",
+  "Indian Economy",
+  "Macroeconomics & Microeconomics",
+  "Banking & Finance",
+  "International Economy",
+  "Space & Defense Technology",
+  "Biotechnology & Health",
+  "Artificial Intelligence & IT",
+  "Basic & Applied Science",
+  "Climate Change",
+  "Biodiversity & Conservation",
+  "Environmental Laws & Treaties",
+  "Disaster Management",
+  "India’s Bilateral Relations",
+  "Global Institutions",
+  "Geopolitical Issues",
+  "Foreign Policies & Agreements",
+  "Ethical Theories",
+  "Public Administration Ethics",
+  "Philosophy & Thinkers",
+  "Case Studies & Real-Life Applications",
+  "Current Affairs",
+  "Government Schemes & Policies",
+  "Social Issues",
+  "Indian Society & Culture",
+  "Internal Security",
+  "Science & Disaster Management",
+  "Indian Art & Culture",
+  "Agriculture & Food Security",
+  "Social Justice & Welfare",
+  "General Life Question",
 ];
 
 const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
@@ -35,6 +65,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
   const [elapsedTime, setElapsedTime] = useState("00:00:00");
   const [isRunning, setIsRunning] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
   const quillRef = useRef(null);
 
   const generateQuestion = async () => {
@@ -109,6 +140,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       setShowToast(true);
     }
   };
+
   useEffect(() => {
     let timer;
     if (isRunning && startTime) {
@@ -131,6 +163,7 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       setIsRunning(true);
     }
   };
+
   const imageHandler = () => {
     const imageUrl = prompt("Enter image URL:");
     if (imageUrl) {
@@ -157,22 +190,20 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
     }),
     []
   );
+
   return (
     <Form>
       {/* Subject Selection */}
       <Form.Group className="mb-3 d-flex align-items-center justify-content-between flex-wrap">
-        <DropdownButton
-          title={subject}
+        {/* Button to open the modal */}
+        <Button
           variant="outline-primary"
-          onSelect={(eventKey) => setSubject(eventKey)}
-          className="mb-2 mb-md-0" // ✅ Add bottom margin on small screens
+          onClick={() => setShowModal(true)}
+          className="mb-2 mb-md-0"
         >
-          {upscSubjects.map((subj) => (
-            <Dropdown.Item key={subj} eventKey={subj}>
-              {subj}
-            </Dropdown.Item>
-          ))}
-        </DropdownButton>
+          {subject}
+        </Button>
+
         {/* Start/Stop Timer Button & Timer Display */}
         <div className="d-flex align-items-center gap-2 mt-2 mt-md-0">
           <Button
@@ -187,6 +218,33 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
         </div>
       </Form.Group>
 
+      {/* Modal for Subject Selection */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Select Subject</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ maxHeight: "300px", overflowY: "auto" }}>
+          {upscSubjects.map((subj) => (
+            <div
+              key={subj}
+              className="p-2 hover-bg-light cursor-pointer"
+              onClick={() => {
+                setSubject(subj);
+                setShowModal(false);
+              }}
+            >
+              {subj}
+            </div>
+          ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Rest of the form remains unchanged */}
       {/* Context Field (Optional) */}
       <Form.Group className="mb-3">
         <Form.Label>Question Context (Optional)</Form.Label>
@@ -260,15 +318,12 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
             variant={isPublic ? "success" : "primary"}
             onClick={() => setIsPublic(!isPublic)}
           >
-            <Button
-              variant={isPublic ? "success" : "primary"} // Changed "danger" to "warning" for a softer look
-              onClick={() => setIsPublic(!isPublic)}
-            >
-              {isPublic ? "Public 👁️‍🗨️" : "Private 🔐"}
-            </Button>
+            {isPublic ? "Public 👁️‍🗨️" : "Private 🔐"}
           </Button>
         </InputGroup>
       </Form.Group>
+
+      {/* Anonymous Toggle */}
       <Form.Group className="mb-3 d-flex align-items-center gap-2">
         <Form.Label>Post as Anonymous:</Form.Label>
         <Form.Check
@@ -283,6 +338,8 @@ const UPSCQuestionForm = ({ googleId, name, handleClose }) => {
       <Button variant="outline-primary" onClick={handleSubmit}>
         Submit
       </Button>
+
+      {/* Toast Notification */}
       <ToastContainer position="top-end" className="p-3">
         <Toast
           bg="info"
