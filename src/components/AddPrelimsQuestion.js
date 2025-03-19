@@ -16,8 +16,8 @@ const upscSubjects = [
 const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
   const { user } = useContext(AuthContext);
   const [newQuestion, setNewQuestion] = useState({
-    userId: user._id, // Assuming you have a way to get the userId
-    author: user.name,
+    userId: user?.id || null,
+    author: user?.name || null,
     question: "",
     category: [],
     options: {
@@ -70,10 +70,10 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
 
     if (result.success) {
       setShowModal(false);
-      // fetchQuestions(); // Refresh the questions list
+      fetchQuestions(); // Refresh the questions list
       setNewQuestion({
-        userId: user._id, // Assuming you have a way to get the userId
-        author: user.name,
+        userId: user?.id || null, // Assuming you have a way to get the userId
+        author: user?.name || null,
         question: "",
         category: [],
         options: {

@@ -15,7 +15,7 @@ const QuestionCard = ({
   fetchQuestions,
 }) => {
   const { user } = useContext(AuthContext);
-  const userId = user._id;
+  const userId = user?.id || null;
 
   const handleVote = async (option) => {
     if (!userId || !questionId) {
