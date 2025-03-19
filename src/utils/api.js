@@ -293,3 +293,49 @@ export const submitRatingAPI = async (answerId, ratings) => {
     throw new Error(error.response?.data?.error || "Failed to submit rating.");
   }
 };
+
+export const addPrelimsQuestion = async (newQuestion) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/prelims/create-question`,
+      newQuestion
+    );
+    if (response.status === 201) {
+      return { success: true, message: "Question submitted successfully!" };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error submitting question. Please try again.",
+    };
+  }
+};
+
+export const fetchPrelimsQuestions = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/prelims/getall-question`);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+    return {
+      success: false,
+      message: "Error fetching questions. Please try again.",
+    };
+  }
+};
+export const voteQuestion = async (userId, questionId, option) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/prelims/vote-question`, {
+      userId,
+      questionId,
+      option,
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error voting:", error);
+    return {
+      success: false,
+      message: "Error voting. Please try again.",
+    };
+  }
+};

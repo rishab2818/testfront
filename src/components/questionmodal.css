@@ -1,0 +1,29 @@
+/* Custom CSS for compact modal */
+.modal-compact .modal-dialog {
+    max-width: 500px;
+    /* Adjust the width for larger screens */
+    margin: 1rem auto;
+    /* Center the modal */
+}
+
+@media (max-width: 768px) {
+    .modal-compact .modal-dialog {
+        max-width: 95%;
+        /* Full width on mobile */
+        margin: 1rem auto;
+    }
+}
+
+.modal-compact .modal-body {
+    padding: 1rem;
+    /* Reduce padding inside the modal */
+}
+.vote-button {
+    transition: all 0.3s ease-in-out;
+}
+
+.vote-button:hover {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.02);
+}
