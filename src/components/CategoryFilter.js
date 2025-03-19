@@ -82,7 +82,7 @@ const CategoryFilter = ({ setSelectedCategory, ctype }) => {
           {showCategory}
         </Dropdown.Toggle>
         <Dropdown.Menu
-          className="w-100"
+          className="w-200"
           style={{ maxHeight: "300px", overflowY: "auto" }} // Add scrollable menu
         >
           {categories.map((category) => (
