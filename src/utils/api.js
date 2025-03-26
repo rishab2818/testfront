@@ -362,3 +362,35 @@ export const fetchUserPoints = async (userId) => {
     return 0;
   }
 };
+export const fetchPublicUpscPosts = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/posts/getPublicUpscPosts`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching public UPSC posts:", error);
+    return [];
+  }
+};
+
+// Fetch UPSC Questions with the Newest Answer
+export const fetchUpscQuestionsWithNewestAnswer = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/posts/getQuesWNewestAns`);
+    console.log("response",response)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching UPSC questions with newest answer:", error);
+    return [];
+  }
+};
+
+// Fetch Trending Q&A
+export const fetchTrendingQnA = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/posts/getTrendingQnA`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trending Q&A:", error);
+    return [];
+  }
+};

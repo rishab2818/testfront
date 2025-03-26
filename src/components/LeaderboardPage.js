@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { fetchTopUsersOfMonth } from "../utils/api"; // Import API call function
-
+import { Link } from "react-router-dom";
 const medals = ["🥇", "🥈", "🥉"];
 
 const LeaderboardPage = () => {
@@ -19,6 +19,7 @@ const LeaderboardPage = () => {
     };
     getLeaderboardData();
   }, []);
+
 
   const displayedUsers = showAll ? users.slice(0, 100) : users.slice(0, 10);
 
@@ -48,7 +49,14 @@ const LeaderboardPage = () => {
                   {displayedUsers.map((user, index) => (
                     <tr key={user._id} className={index < 3 ? "table-warning" : ""}>
                       <td className="fw-bold">{index < 3 ? medals[index] : index + 1}</td>
-                      <td>{user.name}</td>
+                      <td>
+                      <Link 
+    to={`/author/${user._id}/true`} 
+    state={{ author: { userId: user._id, includePrivate: true } }}
+  >
+    {user.name}
+  </Link>
+                      </td>
                       <td>{user.points}</td>
                     </tr>
                   ))}
@@ -115,7 +123,7 @@ Let \( P \) represent the total points of a user. The points change based on the
    - \( P_{user} = P_{user} - 5 \)
 
 #### **9. Adding an Answer within 24 Hours**
-   - Additional bonus: \( P_{user} = P_{user} + 2 \)
+   - Additional bonus: \( P_{user} = P_{user} + 4 \)
 
 #### **10. Rating an Answer**
    - \( P_{rater} = P_{rater} + 5 \)

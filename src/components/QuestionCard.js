@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Card, Button, Badge, Row, Col, Container } from "react-bootstrap";
+import React, { useContext,useState } from "react";
+import { Card, Button, Badge, Row, Col, Container,Toast } from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
 import { voteQuestion } from "../utils/api";
 import "./questionmodal.css"; // Import the CSS file
@@ -15,14 +15,16 @@ const QuestionCard = ({
   fetchQuestions,
 }) => {
   const { user } = useContext(AuthContext);
-  const userId = user?.id || null;
-
+  const userId = user?._id || null;
+  // Toast state
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const handleVote = async (option) => {
-    if (!userId || !questionId) {
-      console.error("User ID or Question ID is missing.");
+    if (!userId) {
+      setToastMessage("Sign in to vote on a question!");
+      setShowToast(true);
       return;
     }
-
     const result = await voteQuestion(userId, questionId, option);
     if (result.success) {
       fetchQuestions();
@@ -32,6 +34,7 @@ const QuestionCard = ({
   };
 
   return (
+    <>
     <Card
       className="mb-4 shadow-sm border-0 rounded-3 bg-white"
       style={{ minHeight: "300px" }}
@@ -73,6 +76,26 @@ const QuestionCard = ({
         </Container>
       </Card.Body>
     </Card>
+          {/* Toast Message */}
+          <Toast
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          delay={3000}
+          autohide
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#17a2b8",
+            color: "white",
+            padding: "10px",
+            borderRadius: "8px",
+          }}
+        >
+          <Toast.Body>{toastMessage}</Toast.Body>
+        </Toast>
+        </>
   );
 };
 

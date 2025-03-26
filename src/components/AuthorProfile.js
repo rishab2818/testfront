@@ -17,8 +17,10 @@ import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; // 5 answers per page
 const AuthorProfile = ({ mode, selectedCategory }) => {
   const { authoruserId, includePrivate } = useParams();
+ 
   const location = useLocation();
   const authorObject = location.state?.author || {};
+
   const [answers, setAnswers] = useState([]);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,6 +34,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
   const [expandedAnswers, setExpandedAnswers] = useState({});
   const [points, setPoints] = useState(0);
   const userId = user?._id;
+  
   useEffect(() => {
     if (authoruserId) {
       const getUserPoints = async () => {

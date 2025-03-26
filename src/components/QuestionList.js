@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, Row, Col, Spinner, Alert, Pagination } from "react-bootstrap";
-import { fetchQuestionsAPI, fetchFollowerQuestionsAPI } from "../utils/api"; // ✅ Import API function
+import { fetchQuestionsAPI, fetchFollowerQuestionsAPI ,fetchPublicUpscPosts,fetchUpscQuestionsWithNewestAnswer,fetchTrendingQnA} from "../utils/api"; // ✅ Import API function
 import AuthContext from "../context/AuthContext"; // ✅ For logged-in user context
 import "./image.css"; // Import the CSS file
 const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
@@ -11,6 +11,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
   const { user } = useContext(AuthContext); // ✅ Access logged-in user
+
   useEffect(() => {
     const loadQuestions = async () => {
       setLoading(true); // ✅ Always set loading to true before fetching new data
@@ -20,7 +21,16 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
         let data = [];
         if (filterType === "all") {
           data = await fetchQuestionsAPI(mode);
-        } else {
+        }else if(filterType === "newest"){
+          data = await fetchPublicUpscPosts(); 
+
+        } 
+        else if (filterType === "topAnswered") {
+          data = await fetchUpscQuestionsWithNewestAnswer();
+        } else if (filterType === "Trending") {
+          data = await fetchTrendingQnA();
+        } 
+        else {
           data = await fetchFollowerQuestionsAPI(mode, user?._id);
           //update backend..to bored rite now
           const filteredData = data.filter((item) =>
@@ -44,7 +54,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
   if (!loading && !error && questions.length === 0) {
     return (
       <Alert variant="info" className="mt-4 text-center">
-        No questions found.
+        Nothing Here!!!
       </Alert>
     );
   }
