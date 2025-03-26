@@ -26,7 +26,8 @@
 }
 
 .profile-followers,
-.profile-following {
+.profile-following,
+.profile-points {
     font-size: 0.9rem;
     color: #666;
 }

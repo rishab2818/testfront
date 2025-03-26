@@ -5,6 +5,7 @@ import {
   fetchAuthorAnswersAPI,
   updateProfileAPI,
   deleteAnswerAPI,
+  fetchUserPoints 
 } from "../utils/api"; // Import API functions
 import ToastMessage from "./ToastMessage";
 import { Link } from "react-router-dom";
@@ -44,7 +45,7 @@ const Profile = ({ selectedCategory, mode }) => {
   const [showToast, setShowToast] = useState(false);
   const [filteredcategory, setfilteredcategory] = useState([]);
   const [loadingAnswers, setLoadingAnswers] = useState(true);
-
+  const [points, setPoints] = useState(0);
   const type = mode === "question" ? "upsc" : "news";
   const categories = selectedCategory;
   const handleShowEditModal = () => {
@@ -56,7 +57,15 @@ const Profile = ({ selectedCategory, mode }) => {
     });
     setShowEditModal(true);
   };
-
+  useEffect(() => {
+    if (user?._id) {
+      const getUserPoints = async () => {
+        const userPoints = await fetchUserPoints(user._id);
+        setPoints(userPoints);
+      };
+      getUserPoints();
+    }
+  }, [user?._id]);
   const handleCloseEditModal = () => setShowEditModal(false);
 
   const handleUpdateProfile = async () => {
@@ -182,6 +191,7 @@ const Profile = ({ selectedCategory, mode }) => {
                 <p className="profile-following">
                   {profile.following.length} Following
                 </p>
+                <p className="profile-points">⭐  {points} Points</p>
                 <Button
                   variant="outline-primary"
                   className="edit-profile-btn"

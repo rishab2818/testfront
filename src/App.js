@@ -16,6 +16,7 @@ import BookmarkPage from "./components/BookmarkPage";
 import AnecdotePage from "./components/AnecdotePage";
 import TopAnswersOfWeek from "./components/TopAnswersofWeek";
 import PrelimsPage from "./components/PrelimsPage";
+import LeaderboardPage from "./components/LeaderboardPage";
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filterType, setFilterType] = useState("all");
@@ -86,6 +87,7 @@ const App = () => {
               <Route path="/anecdote" element={<AnecdotePage />} />
               <Route path="/week-answer" element={<TopAnswersOfWeek />} />
               <Route path="/prelims" element={<PrelimsPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
               {/* ✅ New Route */}
               {/* ✅ Show question details */}
             </Routes>

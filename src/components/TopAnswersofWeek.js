@@ -164,7 +164,7 @@ const TopAnswersOfWeek = () => {
             the top 3 answers are displayed.
           </Card.Text>
 
-          {/* Tier-Based Payout Section */}
+          {/* Tier-Based Payout Section 
           <Card.Title className="mt-4">Tier-Based Payout System</Card.Title>
           <Card.Text>
             Authors can earn payouts at the end of the month based on their
@@ -185,6 +185,7 @@ const TopAnswersOfWeek = () => {
             Payouts are processed at the end of each month based on your tier
             and engagement metrics.
           </Card.Text>
+          */}
         </Card.Body>
       </Card>
     </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal, Button, Spinner, Alert } from "react-bootstrap";
 import { Star } from "react-feather";
 import { submitRatingAPI } from "../utils/api";
-const RatingModal = ({ isOpen, onClose, onSubmit, ratingId }) => {
+const RatingModal = ({ isOpen, onClose, onSubmit, ratingId,}) => {
   const [ratings, setRatings] = useState({
     structureClarity: 0,
     factualAccuracy: 0,
@@ -10,6 +10,7 @@ const RatingModal = ({ isOpen, onClose, onSubmit, ratingId }) => {
     depthOfAnalysis: 0,
     relevanceToQuestion: 0,
     overallRating: 0,
+    _id:ratingId.user
   });
 
   const [loading, setLoading] = useState(false);

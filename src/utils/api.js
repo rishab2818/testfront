@@ -126,7 +126,7 @@ export const rateAnswerAPI = async (answerId, rating) => {
   return response.data;
 };
 
-export const likeAnswerAPI = async (answerId, googleId) => {
+export const likeAnswerAPI = async (answerId, _id) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -143,7 +143,7 @@ export const likeAnswerAPI = async (answerId, googleId) => {
 
   const response = await axios.post(
     `${API_BASE_URL}/answers/${answerId}/like`,
-    { googleId }, // ✅ Include googleId in the request body
+    { _id }, // ✅ Include googleId in the request body
     config
   );
 
@@ -337,5 +337,28 @@ export const voteQuestion = async (userId, questionId, option) => {
       success: false,
       message: "Error voting. Please try again.",
     };
+  }
+};
+
+export const fetchTopUsersOfMonth = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/points/top-users`);
+    const data = await response.json();
+    return data.topUsers || [];
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    return [];
+  }
+};
+
+export const fetchUserPoints = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/points/user/${userId}`);
+    const data = await response.json();
+
+    return data.points || 0;
+  } catch (error) {
+    console.error("Error fetching user points:", error);
+    return 0;
   }
 };

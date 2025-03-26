@@ -50,7 +50,9 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
           >
             <ul className="navbar-nav ms-auto">
               <li className="nav-item nav-link text-warning">
-                Claim Your Coins
+              <Link to="/leaderboard">
+                Leaderboard
+                </Link>
               </li>
               <li className="nav-item">
                 <Link to="/prelims">
@@ -123,14 +125,14 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
               )}
 
               {/*  Mode Toggle (Always Visible) */}
-              <li className="nav-item">
+              {/*<li className="nav-item">
                 <button
                   className="btn btn-dark mx-2 btn-light"
                   onClick={toggleMode}
                 >
                   {mode === "question" ? "UPSC" : "Editorial"}
                 </button>
-              </li>
+              </li>*/}
 
               {/* ✅ Authentication Controls */}
               <li className="nav-item ms-auto">

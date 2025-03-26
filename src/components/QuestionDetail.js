@@ -75,7 +75,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
 
   const handleLike = async (answerId) => {
     try {
-      const response = await likeAnswerAPI(answerId, user?.googleId);
+      const response = await likeAnswerAPI(answerId, user?._id);
       const updatedAnswers = question.answers.map((ans) =>
         ans._id === answerId ? { ...ans, likes: response.likes } : ans
       );
@@ -119,7 +119,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
   };
 
   const handleOpenModal = (answerId) => {
-    setRatingId({ user: null, answerId: answerId });
+    setRatingId({ user: user?._id, answerId: answerId });
     setModalOpen(true);
   };
 
@@ -379,6 +379,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
         onClose={handleCloseModal}
         onSubmit={handleRatingSubmit}
         ratingId={ratingId}
+
       />
     </div>
   );

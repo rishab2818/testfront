@@ -6,6 +6,7 @@ import {
   fetchProfilebyId,
   toggleFollowAPI,
   toggleBookmarkAPI,
+  fetchUserPoints
 } from "../utils/api";
 import AuthContext from "../context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -29,8 +30,17 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
   const [showToast, setShowToast] = useState(false);
   const { user } = useContext(AuthContext);
   const [expandedAnswers, setExpandedAnswers] = useState({});
+  const [points, setPoints] = useState(0);
   const userId = user?._id;
-
+  useEffect(() => {
+    if (authoruserId) {
+      const getUserPoints = async () => {
+        const userPoints = await fetchUserPoints(authoruserId);
+        setPoints(userPoints);
+      };
+      getUserPoints();
+    }
+  }, [authoruserId]);
   useEffect(() => {
     const loadAuthorDetails = async () => {
       if (!authoruserId) return;
@@ -135,6 +145,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
                 <p className="profile-following">
                   {profile.following.length} Following
                 </p>
+                <p className="profile-points">⭐  {points} Points</p>
                 {userId && profile._id !== userId && (
                   <Button
                     variant={isFollowing ? "danger" : "primary"}
