@@ -13,10 +13,11 @@ import ProfilePage from "./components/Profile";
 import GroupQuestions from "./components/GroupQuestions";
 import Group from "./components/Group";
 import BookmarkPage from "./components/BookmarkPage";
-import AnecdotePage from "./components/AnecdotePage";
+import AnecdotePage from "./components/AnecdotePage/AnecdotePage";
 import TopAnswersOfWeek from "./components/TopAnswersofWeek";
 import PrelimsPage from "./components/PrelimsPage";
 import LeaderboardPage from "./components/LeaderboardPage";
+import PrelimsDetail from "./components/PrelimsDetail"
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filterType, setFilterType] = useState("all");
@@ -88,6 +89,15 @@ const App = () => {
               <Route path="/week-answer" element={<TopAnswersOfWeek />} />
               <Route path="/prelims" element={<PrelimsPage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route
+                path="/prelims-que/:questionId"
+                element={
+                  <PrelimsDetail
+                    mode={mode}
+                    selectedCategory={selectedCategory}
+                  />
+                }
+              />
               {/* ✅ New Route */}
               {/* ✅ Show question details */}
             </Routes>

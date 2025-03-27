@@ -1,8 +1,10 @@
 import React, { useContext,useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, Button, Badge, Row, Col, Container,Toast } from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
-import { voteQuestion } from "../utils/api";
+import { voteQuestion,likePrelimsQuestion } from "../utils/api";
 import "./questionmodal.css"; // Import the CSS file
+import { FaHeart } from "react-icons/fa"; // Import heart icon
 
 const QuestionCard = ({
   question,
@@ -19,6 +21,7 @@ const QuestionCard = ({
   // Toast state
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [likeCount, setLikeCount] = useState(likes); // Track likes locally
   const handleVote = async (option) => {
     if (!userId) {
       setToastMessage("Sign in to vote on a question!");
@@ -30,6 +33,24 @@ const QuestionCard = ({
       fetchQuestions();
     } else {
       console.error(result.message);
+    }
+  };
+  const handleLike = async () => {
+
+    
+    if (!userId) {
+      setToastMessage("Sign in to like the question!");
+      setShowToast(true);
+      return;
+    }
+  
+    const result = await likePrelimsQuestion(userId, questionId);
+    
+    if (result.success) {
+      setLikeCount((prev) => prev + 1); // Increase like count locally
+    } else {
+      setToastMessage(result.message || "Failed to like the question!");
+      setShowToast(true);
     }
   };
 
@@ -66,15 +87,24 @@ const QuestionCard = ({
         </div>
 
         {/* Like and Vote Counts (Bottom of the Card) */}
-        <Container className="mt-4">
-          <Row>
-            <Col xs="auto">❤️ {likes}</Col>
-            <Col xs="auto">
-              🗳️ {votes.optionA + votes.optionB + votes.optionC + votes.optionD}
-            </Col>
-          </Row>
-        </Container>
+        <Container className="mt-4 d-flex">
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={handleLike}
+            >
+              <FaHeart /> Like
+            </Button>
+            <span className="ms-3"> ❤️ {likeCount}</span>
+            <span className="ms-3">🗳️ {votes.optionA + votes.optionB + votes.optionC + votes.optionD}</span>
+          </Container>
+          <div className="mt-2 ms-2">
+                  <Link to={`/prelims-que/${questionId}`} className="outline-primary">
+                    Explaination
+                  </Link>
+                </div>
       </Card.Body>
+
     </Card>
           {/* Toast Message */}
           <Toast

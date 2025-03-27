@@ -22,6 +22,7 @@ import {
 import { Tooltip } from "react-tooltip";
 import "./Profile.css"; // Import the CSS file
 import "./image.css"; // Import the CSS file
+import PrelimsSection from './PrelimsSection'; // Import the PrelimsSection component
 const includePrivate = true;
 const Profile = ({ selectedCategory, mode }) => {
   const { user } = useContext(AuthContext);
@@ -46,6 +47,7 @@ const Profile = ({ selectedCategory, mode }) => {
   const [filteredcategory, setfilteredcategory] = useState([]);
   const [loadingAnswers, setLoadingAnswers] = useState(true);
   const [points, setPoints] = useState(0);
+  const [activeTab, setActiveTab] = useState('qna'); // 'qna' or 'prelims'
   const type = mode === "question" ? "upsc" : "news";
   const categories = selectedCategory;
   const handleShowEditModal = () => {
@@ -234,8 +236,28 @@ const Profile = ({ selectedCategory, mode }) => {
           </Card.Body>
         </Card>
       )}
+      {/* Tab Navigation */}
+      <div className="tab-container mt-4">
+        <div className="d-flex justify-content-center border-bottom">
+          <div 
+            className={`tab-item ${activeTab === 'qna' ? 'active-tab' : ''}`}
+            onClick={() => setActiveTab('qna')}
+          >
+            QnA Answers
+          </div>
+          <div 
+            className={`tab-item ${activeTab === 'prelims' ? 'active-tab' : ''}`}
+            onClick={() => setActiveTab('prelims')}
+          >
+            Prelims Answers
+          </div>
+        </div>
+      </div>
 
-      {/* Answers Section */}
+     {/* Content Section */}
+     {activeTab === 'qna' ? (
+        /* QnA Answers Section */
+        <>
       <h2 className="text-center">Answers by {profile?.name}</h2>
       {loadingAnswers ? (
         <Spinner animation="border" className="d-block mx-auto mt-5" />
@@ -377,7 +399,14 @@ const Profile = ({ selectedCategory, mode }) => {
           </div>
         </>
       )}
-
+        </>
+      ) : (
+        /* Prelims Section */
+        <PrelimsSection 
+          userId={user?._id} 
+          profileName={profile?.name} 
+        />
+      )}
       {/* Edit Profile Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
         <Modal.Header closeButton>

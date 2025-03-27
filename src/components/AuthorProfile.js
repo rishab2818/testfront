@@ -14,6 +14,7 @@ import "./AuthorProfile.css";
 import ToastMessage from "./ToastMessage";
 import { Tooltip } from "react-tooltip";
 import "./image.css"; // Import the CSS file
+import PrelimsSection from './PrelimsSection';
 const PAGE_SIZE = 5; // 5 answers per page
 const AuthorProfile = ({ mode, selectedCategory }) => {
   const { authoruserId, includePrivate } = useParams();
@@ -33,6 +34,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
   const { user } = useContext(AuthContext);
   const [expandedAnswers, setExpandedAnswers] = useState({});
   const [points, setPoints] = useState(0);
+  const [activeTab, setActiveTab] = useState('qna'); // 'qna' or 'prelims'
   const userId = user?._id;
   
   useEffect(() => {
@@ -191,6 +193,25 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
           </Card.Body>
         </Card>
       )}
+      <div className="tab-container mt-4">
+  <div className="d-flex justify-content-center border-bottom">
+    <div 
+      className={`tab-item ${activeTab === 'qna' ? 'active-tab' : ''}`}
+      onClick={() => setActiveTab('qna')}
+    >
+      QnA Answers
+    </div>
+    <div 
+      className={`tab-item ${activeTab === 'prelims' ? 'active-tab' : ''}`}
+      onClick={() => setActiveTab('prelims')}
+    >
+      Prelims Answers
+    </div>
+  </div>
+</div>
+{activeTab === 'qna' ? (
+      /* QnA Answers Section */
+      <>
       <h2 className="text-center">Answers by {profile?.name}</h2>
       {paginatedAnswers.length === 0 ? (
         <h2 className="text-center mt-5">No answers found</h2>
@@ -286,9 +307,16 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
           </Card>
         ))
       )}
-
+      </>
+    ) : (
+      /* Prelims Section - uses separate component */
+      <PrelimsSection 
+        userId={authoruserId} 
+        profileName={profile?.name} 
+      />
+    )}
       {/* Pagination UI */}
-      {totalPages > 1 && (
+      {activeTab === 'qna' && totalPages > 1 && (
         <div className="d-flex justify-content-center mt-3">
           <Button
             variant="outline-primary"
@@ -313,6 +341,7 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
           </Button>
         </div>
       )}
+
       <ToastMessage
         showToast={showToast}
         setShowToast={setShowToast}

@@ -1,6 +1,7 @@
 import axios from "axios";
-
-const API_BASE_URL = "https://testback-wozi.onrender.com";
+const test ="http://localhost:5000"
+const prod ="https://testback-wozi.onrender.com"
+const API_BASE_URL = test;
 
 export const verifyTokenAPI = (token) => {
   return axios.post(
@@ -392,5 +393,61 @@ export const fetchTrendingQnA = async () => {
   } catch (error) {
     console.error("Error fetching trending Q&A:", error);
     return [];
+  }
+};
+
+export const likePrelimsQuestion = async (userId, questionId) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/prelims/like-question`, {
+      userId,
+      questionId,
+    });
+    return response.data; // Use backend's response directly
+  } catch (error) {
+    console.error("Error liking question:", error);
+    return { success: false, message: error.response?.data?.message || "Unknown error occurred" };
+  }
+};
+
+export const addPrelimsAnswer = async (payload) => {
+  const response = await fetch(
+    `${API_BASE_URL}/prelims/addAnswer`, 
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to submit answer");
+  }
+
+  return response.json();
+};
+export const getPrelimsDetails = async (questionId) => {
+  const response = await fetch(`${API_BASE_URL}/prelims/prelimsqna/${questionId}`);
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to fetch prelims details");
+  }
+
+  return response.json();
+};
+export const fetchPrelimsData = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/prelims/getuser-qna/${userId}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Error fetching prelims data:", err);
+    return null; // Return null or an empty array to handle errors gracefully
   }
 };

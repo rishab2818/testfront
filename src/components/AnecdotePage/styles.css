@@ -1,0 +1,59 @@
+/* Main Container */
+.anecdote-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  /* Tab Navigation */
+  .tab-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+  }
+  
+  .tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  
+  .tab-btn:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .tab-btn.active {
+    color: #0d6efd;
+    background-color: #e7f1ff;
+    font-weight: 600;
+  }
+  
+  /* Content Sections */
+  .content-section {
+    padding: 20px 0;
+  }
+  
+  .section-title {
+    color: #0d6efd;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .tab-navigation {
+      flex-direction: column;
+    }
+    
+    .tab-btn {
+      width: 100%;
+      text-align: left;
+    }
+  }
