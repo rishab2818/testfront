@@ -74,6 +74,11 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
   }, [mode, question?._id]); // ✅ Dependency array remains the same
 
   const handleLike = async (answerId) => {
+    if (!user) {
+      setToastMessage("Please login to like this answer");
+      setShowToast(true);
+      return;
+    }
     try {
       const response = await likeAnswerAPI(answerId, user?._id);
       const updatedAnswers = question.answers.map((ans) =>
@@ -100,6 +105,11 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
     }));
   };
   const handleBookmark = async (answerId, userId, setBookmarkedAnswers) => {
+    if (!user) {
+      setToastMessage("Please login to bookmark this answer");
+      setShowToast(true);
+      return;
+    }
     try {
       const response = await toggleBookmarkAPI(userId, answerId); // Call API
 
@@ -119,7 +129,12 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
   };
 
   const handleOpenModal = (answerId) => {
-    setRatingId({ user: user?._id, answerId: answerId });
+    if (!user) {
+      setToastMessage("Please login to rate this answer");
+      setShowToast(true);
+      return;
+    }
+    setRatingId({ user: null, answerId: answerId });
     setModalOpen(true);
   };
 
@@ -275,8 +290,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                         </span>
                       </Card.Text>
 
-                      {user && (
-                        <>
+                
                           <Button
                             variant="outline-danger"
                             size="sm"
@@ -285,9 +299,8 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                           >
                             <FaHeart /> Like
                           </Button>
-                        </>
-                      )}
-                      {user && (
+                
+                   
                         <div className="d-flex justify-content-between align-items-center mt-2">
                           <Button
                             variant="outline-success"
@@ -303,7 +316,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                             onClick={() =>
                               handleBookmark(
                                 ans._id,
-                                user._id,
+                                user?._id,
                                 setBookmarkedAnswers
                               )
                             }
@@ -311,7 +324,7 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                             🔖 Bookmark
                           </Button>
                         </div>
-                      )}
+                   
                     </Card.Body>
                   </Card>
                 ))
@@ -379,7 +392,6 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
         onClose={handleCloseModal}
         onSubmit={handleRatingSubmit}
         ratingId={ratingId}
-
       />
     </div>
   );
