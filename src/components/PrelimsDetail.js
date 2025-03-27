@@ -6,7 +6,6 @@ import PrelimsAnswerForm from "./PrelimsAnswerForm";
 
 import {
   likeAnswerAPI,
-  toggleBookmarkAPI,
   getPrelimsDetails
 } from "../utils/api";
 import AuthContext from "../context/AuthContext";
@@ -31,7 +30,7 @@ const PrelimsDetail = ({ mode, selectedCategory }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [newAnswer, setNewAnswer] = useState(false);
-  const [bookmarkedAnswers, setBookmarkedAnswers] = useState([]);
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [ratingId, setRatingId] = useState({
     userid: null,
@@ -91,27 +90,7 @@ const PrelimsDetail = ({ mode, selectedCategory }) => {
   };
 
 
-  const handleBookmark = async (answerId, userId, setBookmarkedAnswers) => {
-    if (!user) {
-      setToastMessage("Please login to bookmark this answer");
-      setShowToast(true);
-      return;
-    }
-    try {
-      const response = await toggleBookmarkAPI(userId, answerId);
-      setBookmarkedAnswers((prev) =>
-        prev.includes(answerId)
-          ? prev.filter((id) => id !== answerId)
-          : [...prev, answerId]
-      );
-      setShowToast(true);
-      setToastMessage(response.data.message);
-    } catch (error) {
-      console.error("Error bookmarking:", error);
-      setShowToast(true);
-      setToastMessage("Failed to bookmark.");
-    }
-  };
+
 
   const handleOpenModal = (answerId) => {
     if (!user) {
@@ -300,19 +279,7 @@ const PrelimsDetail = ({ mode, selectedCategory }) => {
                         >
                           ⭐ Rate Answer
                         </Button>
-                        <Button
-                          variant="outline-primary"
-                          size="sm"
-                          onClick={() =>
-                            handleBookmark(
-                              ans._id,
-                              user?._id,
-                              setBookmarkedAnswers
-                            )
-                          }
-                        >
-                          🔖 Bookmark
-                        </Button>
+
                       </div>
                     </Card.Body>
                   </Card>
