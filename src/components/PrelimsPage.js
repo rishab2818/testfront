@@ -24,7 +24,7 @@ const PrelimsPage = () => {
     const result = await fetchPrelimsQuestions();
     if (result.success) {
       setData(result.data); // Update state with fetched data
-      console.log(result.data, "result");
+
     } else {
       console.error(result.message); // Handle error
     }

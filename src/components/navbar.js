@@ -4,14 +4,20 @@ import { GoogleLogin } from "@react-oauth/google";
 import { handleSuccess } from "../utils/auth";
 import AuthContext from "../context/AuthContext";
 import PostModal from "./PostModal"; // Import Modal
-
+import { Toast, ToastContainer } from "react-bootstrap";
 const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
   const { user, login, logout } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false); // Modal state
   const [isNavCollapsed, setIsNavCollapsed] = useState(true); // Collapsed state
+  const [showToast, setShowToast] = useState(false);
   // Toggle between "question" and "article"
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === "question" ? "article" : "question"));
+  };
+  const handleClicks = () => {
+    if (!user) {
+      setShowToast(true);
+    }
   };
 
   // Toggle Navbar Collapse
@@ -80,34 +86,30 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
                     className="btn btn-dark mx-2 btn-light"
                     onClick={() => setIsNavCollapsed(true)}
                   >
-                    Anecdote
+                    Syllabus
                   </button>
                 </Link>
               </li>
-              {user && (
-                <>
-                  <li className="nav-item">
-                    <Link to="/group">
-                      <button
-                        className="btn btn-dark mx-2 btn-light"
-                        onClick={() => setIsNavCollapsed(true)}
-                      >
-                        Group
-                      </button>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/bookmark">
-                      <button
-                        className="btn btn-dark mx-2 btn-light"
-                        onClick={() => setIsNavCollapsed(true)}
-                      >
-                        Bookmarks
-                      </button>
-                    </Link>
-                  </li>
-                </>
-              )}
+              <li className="nav-item">
+            <Link to={user ? "/group" : "#"}>
+              <button
+                className="btn btn-dark mx-2 btn-light"
+                onClick={() => (user ? setIsNavCollapsed(true) : handleClicks())}
+              >
+                Group
+              </button>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to={user ? "/bookmark" : "#"}>
+              <button
+                className="btn btn-dark mx-2 btn-light"
+                onClick={() => (user ? setIsNavCollapsed(true) : handleClicks())}
+              >
+                Bookmarks
+              </button>
+            </Link>
+          </li>
 
               {/*  Show Add Question/Article Button ONLY if User is Signed In */}
               {user && (
@@ -119,7 +121,7 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
                       setIsNavCollapsed(true);
                     }}
                   >
-                    {mode === "question" ? "📝 Add Question" : "📝 Add Article"}
+                    {mode === "question" ? "📝 New Topic" : "📝 Add Article"}
                   </button>
                 </li>
               )}
@@ -186,6 +188,19 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
           handleClose={() => setShowModal(false)}
         />
       )}
+            <ToastContainer position="top-end" className="p-3">
+        <Toast
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          bg="danger"
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white">
+            Please log in to access this feature.
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </>
   );
 };

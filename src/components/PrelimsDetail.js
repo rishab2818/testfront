@@ -6,10 +6,11 @@ import PrelimsAnswerForm from "./PrelimsAnswerForm";
 
 import {
   likeAnswerAPI,
-  getPrelimsDetails
+  getPrelimsDetails,
+  voteQuestion
 } from "../utils/api";
 import AuthContext from "../context/AuthContext";
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer,Badge } from "react-bootstrap";
 import RatingModal from "./RatingModal";
 import { Tooltip } from "react-tooltip";
 import "./image.css";
@@ -37,7 +38,7 @@ const PrelimsDetail = ({ mode, selectedCategory }) => {
     answerId: null,
   });
 
-
+  const [isVoting, setIsVoting] = useState(false);
   useEffect(() => {
     const loadPrelimsDetails = async () => {
       setLoading(true);
@@ -79,6 +80,79 @@ const PrelimsDetail = ({ mode, selectedCategory }) => {
         setToastMessage("Failed to like answer. Try again later.");
         setShowToast(true);
       }
+    }
+  };
+  const handleVote = async (option) => {
+    if (!user) {
+      setToastMessage("Please login to vote on this question");
+      setShowToast(true);
+      return;
+    }
+    
+    if (isVoting) return; // Prevent multiple votes while processing
+    
+    setIsVoting(true);
+    
+    try {
+      // Optimistically update the UI
+      const currentVotes = prelimsData.prelimsQuestion.votes || {
+        optionA: 0,
+        optionB: 0,
+        optionC: 0,
+        optionD: 0
+      };
+      
+      const updatedPrelimsData = {
+        ...prelimsData,
+        prelimsQuestion: {
+          ...prelimsData.prelimsQuestion,
+          votes: {
+            ...currentVotes,
+            [option]: currentVotes[option] + 1
+          }
+        }
+      };
+      
+      setPrelimsData(updatedPrelimsData);
+      
+      const result = await voteQuestion(user._id, questionId, option);
+      
+      if (result.success) {
+        // Update with server-confirmed vote counts
+        setPrelimsData(prev => ({
+          ...prev,
+          prelimsQuestion: {
+            ...prev.prelimsQuestion,
+            votes: result.votes
+          }
+        }));
+        setToastMessage("Vote recorded successfully!");
+        setShowToast(true);
+      } else {
+        // Revert if the vote failed
+        setPrelimsData(prev => ({
+          ...prev,
+          prelimsQuestion: {
+            ...prev.prelimsQuestion,
+            votes: currentVotes
+          }
+        }));
+        setToastMessage(result.message || "Failed to record vote");
+        setShowToast(true);
+      }
+    } catch (err) {
+      // Revert on error
+      setPrelimsData(prev => ({
+        ...prev,
+        prelimsQuestion: {
+          ...prev.prelimsQuestion,
+          votes: prelimsData.prelimsQuestion.votes
+        }
+      }));
+      setToastMessage("An error occurred while voting");
+      setShowToast(true);
+    } finally {
+      setIsVoting(false);
     }
   };
 
@@ -141,17 +215,51 @@ const PrelimsDetail = ({ mode, selectedCategory }) => {
               </Card.Text>
 
               {/* Display MCQ options if they exist */}
+              {/* Display MCQ options with voting buttons */}
               {prelimsData?.prelimsQuestion.optionA && (
                 <div className="mt-3">
                   <h5>Options:</h5>
-                  <ul className="list-unstyled">
-                    <li>A. {prelimsData?.prelimsQuestion.optionA}</li>
-                    <li>B. {prelimsData?.prelimsQuestion.optionB}</li>
-                    <li>C. {prelimsData?.prelimsQuestion.optionC}</li>
-                    <li>D. {prelimsData?.prelimsQuestion.optionD}</li>
-                  </ul>
+                  <div className="d-grid gap-3 mt-3">
+                    {['optionA', 'optionB', 'optionC', 'optionD'].map((option) => (
+                      prelimsData.prelimsQuestion[option] && (
+                        <Button
+                        key={option}
+                        variant="outline-primary"
+                        className="d-flex justify-content-between align-items-center text-start p-3 rounded vote-button"
+                        onClick={() => handleVote(option)}
+                        style={{
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
+                          overflowWrap: "break-word",
+                          textAlign: "left",
+                          display: "block",
+                          backgroundColor: "#f8f9fa",
+                          border: "1px solid #ccc",
+                          transition: "0.2s ease-in-out",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#e9ecef")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#f8f9fa")
+                        }
+                      >
+                        <span style={{ flex: 1, wordBreak: "break-word" ,color: "black" }}>
+                        {prelimsData.prelimsQuestion[option]}
+                        </span>
+                        <Badge bg="secondary">           {prelimsData.prelimsQuestion.votes?.[option] || 0}</Badge>
+                      </Button>
+                      )
+                    ))}
+                  </div>
+                  <div className="mt-2">
+                    <small className="text-muted">
+                      Total votes: {Object.values(prelimsData.prelimsQuestion.votes || {}).reduce((a, b) => a + b, 0)}
+                    </small>
+                  </div>
                 </div>
               )}
+
 
               {user && (
                 <Button

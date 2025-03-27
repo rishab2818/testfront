@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Spinner, Pagination } from 'react-bootstrap';
 import { fetchPrelimsData } from '../utils/api';
 import "./Profile.css"; // Import the CSS file
+import { Tooltip } from "react-tooltip";
 const PrelimsSection = ({ userId, profileName }) => {
   const [prelimsData, setPrelimsData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +32,7 @@ const PrelimsSection = ({ userId, profileName }) => {
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   );
-
+console.log(paginatedData,"paginatedData")
   return (
     <div className="prelims-section">
       <h2 className="text-center">Prelims Questions by {profileName}</h2>
@@ -80,6 +81,54 @@ const PrelimsSection = ({ userId, profileName }) => {
                     </Button>
                   </>
                 )}
+                                <div className="d-flex justify-content-between align-items-center mt-2">
+                  <small>
+                    ❤️ {item.answer.likes} Likes | ⭐{" "}
+                    <span
+                      data-tooltip-id="ratingTooltip"
+                      data-tooltip-place="top"
+                      style={{
+                        cursor: "pointer",
+                        textDecoration: "underline dotted",
+                      }}
+                    >
+                      {item?.answer.ratings?.totalVotes === 0 ||
+                      item?.answer.ratings?.overallRating == null
+                        ? "NA"
+                        : (
+                          item.answer.ratings.overallRating /
+                          item.answer.ratings.totalVotes
+                          ).toFixed(1)}
+                    </span>
+                    <Tooltip id="ratingTooltip">
+                      <div>
+                        <p>
+                          📚 Structure Clarity:{" "}
+                          {item?.answer.ratings?.structureClarity ?? "NA"}
+                        </p>
+                        <p>
+                          ✅ Factual Accuracy:{" "}
+                          {item?.answer.ratings?.factualAccuracy ?? "NA"}
+                        </p>
+                        <p>
+                          🎤 Presentation:{" "}
+                          {item?.answer.ratings?.presentation ?? "NA"}
+                        </p>
+                        <p>
+                          🔍 Depth of Analysis:{" "}
+                          {item?.answer.ratings?.depthOfAnalysis ?? "NA"}
+                        </p>
+                        <p>
+                          🎯 Relevance to Question:{" "}
+                          {item?.answer.ratings?.relevanceToQuestion ?? "NA"}
+                        </p>
+                        <p>
+                          Total Votes: {item?.answer.ratings?.totalVotes ?? "NA"}
+                        </p>
+                      </div>
+                    </Tooltip>
+                  </small>
+                </div>
               </Card.Body>
             </Card>
           ))}
