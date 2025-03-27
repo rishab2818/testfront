@@ -1,7 +1,7 @@
 import axios from "axios";
 const test ="http://localhost:5000"
 const prod ="https://testback-wozi.onrender.com"
-const API_BASE_URL = prod;
+const API_BASE_URL = test;
 
 export const verifyTokenAPI = (token) => {
   return axios.post(
