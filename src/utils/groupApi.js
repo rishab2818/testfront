@@ -3,7 +3,7 @@ import axios from "axios";
 //const API_BASE_URL = "https://testback-wozi.onrender.com/groups";
 const test ="http://localhost:5000/groups"
 const prod ="https://testback-wozi.onrender.com/groups"
-const API_BASE_URL = test;
+const API_BASE_URL = prod;
 // ✅ Function to get headers with Authorization token
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");

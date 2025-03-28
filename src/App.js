@@ -84,10 +84,10 @@ const App = () => {
               />
               <Route path="/group" element={<Group />} />
               <Route path="/groupqna/" element={<GroupQuestions />} />
-              <Route path="/bookmark" element={<BookmarkPage />} />
+              <Route path="/bookmark" element={<BookmarkPage selectedCategory={selectedCategory}/>} />
               <Route path="/anecdote" element={<AnecdotePage />} />
               <Route path="/week-answer" element={<TopAnswersOfWeek />} />
-              <Route path="/prelims" element={<PrelimsPage />} />
+              <Route path="/prelims" element={<PrelimsPage selectedCategory={selectedCategory}/>} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route
                 path="/prelims-que/:questionId"

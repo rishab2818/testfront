@@ -4,8 +4,9 @@ import AddPrelimsQuestion from "./AddPrelimsQuestion";
 import QuestionCard from "./QuestionCard";
 import { fetchPrelimsQuestions } from "../utils/api.js"; // Import the utility function
 import AuthContext from "../context/AuthContext";
-const PrelimsPage = () => {
+const PrelimsPage = ({selectedCategory}) => {
   const [data, setData] = useState([]);
+  const [filterdData, setfilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const { user } = useContext(AuthContext);
@@ -14,7 +15,7 @@ const PrelimsPage = () => {
   const questionsPerPage = 6; // Adjust based on your needs
   const indexOfLastQuestion = currentPage * questionsPerPage;
   const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
-  const currentQuestions = data.slice(
+  const currentQuestions = filterdData.slice(
     indexOfFirstQuestion,
     indexOfLastQuestion
   );
@@ -29,7 +30,14 @@ const PrelimsPage = () => {
       console.error(result.message); // Handle error
     }
   };
-
+  useEffect(() => {
+    if (selectedCategory === "All") {
+      setfilteredData(data);
+    } else {
+      setfilteredData(data.filter((item) => item.category.includes(selectedCategory)));
+    }
+    
+  }, [selectedCategory,data]);
   useEffect(() => {
     getQuestions();
   }, []);
@@ -78,7 +86,7 @@ const PrelimsPage = () => {
 
       {/* Pagination */}
       <Pagination className="justify-content-center mt-4">
-        {[...Array(Math.ceil(data.length / questionsPerPage))].map(
+        {[...Array(Math.ceil(filterdData.length / questionsPerPage))].map(
           (_, index) => (
             <Pagination.Item
               key={index}

@@ -3,14 +3,51 @@ import { Button, Modal, Form, Toast } from "react-bootstrap";
 import "./questionmodal.css"; // Import the CSS file
 import { addPrelimsQuestion } from "../utils/api.js";
 import AuthContext from "../context/AuthContext";
+
 const upscSubjects = [
-  "History",
-  "Geography",
-  "Polity",
-  "Economics",
-  "Science & Tech",
-  "Environment",
-  "International Relations",
+  "Ancient History",
+  "Medieval History",
+  "Modern History",
+  "Post-Independence History",
+  "World History",
+  "Physical Geography",
+  "Indian Geography",
+  "World Geography",
+  "Economic Geography",
+  "Indian Polity",
+  "Governance & Public Policy",
+  "Political Theories",
+  "International Law & Organizations",
+  "Indian Economy",
+  "Macroeconomics & Microeconomics",
+  "Banking & Finance",
+  "International Economy",
+  "Space & Defense Technology",
+  "Biotechnology & Health",
+  "Artificial Intelligence & IT",
+  "Basic & Applied Science",
+  "Climate Change",
+  "Biodiversity & Conservation",
+  "Environmental Laws & Treaties",
+  "Disaster Management",
+  "India's Bilateral Relations",
+  "Global Institutions",
+  "Geopolitical Issues",
+  "Foreign Policies & Agreements",
+  "Ethical Theories",
+  "Public Administration Ethics",
+  "Philosophy & Thinkers",
+  "Case Studies & Real-Life Applications",
+  "Current Affairs",
+  "Government Schemes & Policies",
+  "Social Issues",
+  "Indian Society & Culture",
+  "Internal Security",
+  "Science & Disaster Management",
+  "Indian Art & Culture",
+  "Agriculture & Food Security",
+  "Social Justice & Welfare",
+  "General Life Question",
 ];
 
 const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
@@ -19,7 +56,7 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
     userId: user?._id || null,
     author: user?.name || null,
     question: "",
-    category: [],
+    category: [], // Array as backend expects
     options: {
       optionA: "",
       optionB: "",
@@ -29,6 +66,7 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
     groupId: null, // Optional
   });
 
+  const [selectedCategory, setSelectedCategory] = useState(""); // For the dropdown selection
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -45,15 +83,18 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
   };
 
   const handleCategoryChange = (e) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setNewQuestion({ ...newQuestion, category: selectedOptions });
+    const value = e.target.value;
+    setSelectedCategory(value);
+    // Store as array with single item to match backend expectation
+    setNewQuestion({
+      ...newQuestion,
+      category: value ? [value] : [],
+    });
   };
+
   const handleSubmit = async () => {
     if (
-      !newQuestion.category.length || // Check if category is selected
+      newQuestion.category.length === 0 || // Check if category is selected
       !newQuestion.question.trim() || // Check if question is provided
       !newQuestion.options.optionA.trim() || // Check if Option A is provided
       !newQuestion.options.optionB.trim() || // Check if Option B is provided
@@ -72,7 +113,7 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
       setShowModal(false);
       fetchQuestions(); // Refresh the questions list
       setNewQuestion({
-        userId: user?._id || null, // Assuming you have a way to get the userId
+        userId: user?._id || null,
         author: user?.name || null,
         question: "",
         category: [],
@@ -84,6 +125,7 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
         },
         groupId: null, // Optional
       });
+      setSelectedCategory(""); // Reset the dropdown selection
     }
   };
 
@@ -120,39 +162,18 @@ const AddPrelimsQuestion = ({ showModal, setShowModal, fetchQuestions }) => {
               <Form.Label style={{ fontSize: "0.9rem", fontWeight: "500" }}>
                 Category
               </Form.Label>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
-                  gap: "8px",
-                  padding: "8px",
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                }}
+              <Form.Select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                size="sm"
               >
+                <option value="">Select a category</option>
                 {upscSubjects.map((subject, index) => (
-                  <Form.Check
-                    key={index}
-                    type="checkbox"
-                    id={`category-${index}`}
-                    label={subject}
-                    value={subject}
-                    checked={newQuestion.category.includes(subject)}
-                    onChange={(e) => {
-                      const selectedCategories = e.target.checked
-                        ? [...newQuestion.category, e.target.value]
-                        : newQuestion.category.filter(
-                            (cat) => cat !== e.target.value
-                          );
-                      setNewQuestion({
-                        ...newQuestion,
-                        category: selectedCategories,
-                      });
-                    }}
-                    style={{ fontSize: "0.9rem" }}
-                  />
+                  <option key={index} value={subject}>
+                    {subject}
+                  </option>
                 ))}
-              </div>
+              </Form.Select>
             </Form.Group>
             <Form.Group className="mb-2">
               <Form.Label style={{ fontSize: "0.9rem" }}>Option A</Form.Label>

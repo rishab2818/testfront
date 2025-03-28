@@ -5,8 +5,9 @@ import { Card, Button, Row, Col } from "react-bootstrap";
 import "./image.css"; // Import the CSS file
 const PAGE_SIZE = 5; //  Show 5 answers per page
 const CHAR_LIMIT = 250; //  Limit initial content display
-const BookmarkPage = () => {
+const BookmarkPage = ({selectedCategory}) => {
   const [bookmarkedAnswers, setBookmarkedAnswers] = useState([]);
+  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
   const { user } = useContext(AuthContext);
   const [expandedAnswers, setExpandedAnswers] = useState({});
   const [expandedTitles, setExpandedTitles] = useState({});
@@ -20,7 +21,16 @@ const BookmarkPage = () => {
       console.error("Error fetching bookmarks:", error.message);
     }
   };
-
+  useEffect(() => {
+    if (selectedCategory === "All") {
+      setFilteredBookmarks(bookmarkedAnswers);
+    } else {
+      const filtered = bookmarkedAnswers.filter(answer => 
+        answer.post.category.includes(selectedCategory)
+      );
+      setFilteredBookmarks(filtered);
+    }
+  }, [selectedCategory, bookmarkedAnswers]);
   const handleRemoveBookmark = async (answerId) => {
     try {
       await toggleBookmarkAPI(user._id, answerId);
@@ -49,11 +59,11 @@ const BookmarkPage = () => {
     }));
   };
 
-  const paginatedAnswers = bookmarkedAnswers?.slice(
+  const paginatedAnswers = filteredBookmarks?.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   );
-  const totalPages = Math.ceil(bookmarkedAnswers?.length / PAGE_SIZE);
+  const totalPages = Math.ceil(filteredBookmarks?.length / PAGE_SIZE);
   return (
     <div className="container mt-4">
       <Row>
