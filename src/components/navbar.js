@@ -5,6 +5,7 @@ import { handleSuccess } from "../utils/auth";
 import AuthContext from "../context/AuthContext";
 import PostModal from "./PostModal"; // Import Modal
 import { Toast, ToastContainer } from "react-bootstrap";
+import { FaTelegramPlane } from "react-icons/fa"; // Import Telegram Icon
 const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
   const { user, login, logout } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false); // Modal state
@@ -56,10 +57,22 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
           >
             <ul className="navbar-nav ms-auto">
               <li className="nav-item nav-link text-warning">
+              <li className="nav-item">
+  <a 
+    href="https://t.me/rishab2818testfront_bot" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="btn btn-dark mx-2 d-flex align-items-center"
+    style={{ fontSize: "1.2rem" }}
+  >
+    <FaTelegramPlane color="#0088cc" size={24} /> {/* Telegram Blue */}
+  </a>
+</li>
               <Link to="/leaderboard">
                 Leaderboard
                 </Link>
               </li>
+
               <li className="nav-item">
                 <Link to="/prelims">
                   <button
