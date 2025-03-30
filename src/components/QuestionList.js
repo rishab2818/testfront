@@ -91,7 +91,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
               <Card.Body className="d-flex flex-column flex-grow-1">
                 <Card.Title title={q.title}>
                   {q.title.length > 100
-                    ? q.title.slice(0, 100) + "..."
+                    ? q.title.slice(0, 120) + "..."
                     : q.title}
                 </Card.Title>
 
@@ -116,7 +116,7 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
                           __html:
                             q.topAnswer.content
                               .split(" ")
-                              .slice(0, 20)
+                              .slice(0, 35)
                               .join(" ") + "...",
                         }}
                       />
