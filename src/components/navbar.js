@@ -56,8 +56,7 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
             }`}
           >
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item nav-link text-warning">
-              <li className="nav-item">
+            <li className="nav-item">
   <a 
     href="https://t.me/rishab2818testfront_bot" 
     target="_blank" 
@@ -68,6 +67,7 @@ const Navbar = ({ mode, setMode, refresh, setRefresh }) => {
     <FaTelegramPlane color="#0088cc" size={24} /> {/* Telegram Blue */}
   </a>
 </li>
+              <li className="nav-item nav-link text-warning">
               <Link to="/leaderboard">
                 Leaderboard
                 </Link>
