@@ -113,14 +113,17 @@ const RelatedPosts = ({ allQuestions, selectedCategory }) => {
                           user?.userId === q.topAnswer.userId
                         }`}
                         state={{ author: q.topAnswer }}
-                        className="text-decoration-none"
+      
                         style={{
-                          color: "inherit",
+                          color: "#007bff", // Standard link blue color
+                          textDecoration: "underline", // Always show underline
+  
                           fontWeight: "inherit",
                           fontSize: "inherit",
                           whiteSpace: "nowrap", // Prevents author name from breaking
                           overflow: "hidden",
                           textOverflow: "ellipsis", // Adds "..." if too long
+                          cursor: "pointer", // Ensure it's clear it's clickable
                         }}
                       >
                         {q.topAnswer.author}

@@ -151,14 +151,21 @@ const AuthorProfile = ({ mode, selectedCategory }) => {
                   {profile.following.length} Following
                 </p>
                 <p className="profile-points">⭐  {points} Points</p>
-                {userId && profile._id !== userId && (
-                  <Button
-                    variant={isFollowing ? "danger" : "primary"}
-                    onClick={handleFollow}
-                  >
-                    {isFollowing ? "Unfollow" : "Follow"}
-                  </Button>
-                )}
+                {(!userId || profile._id !== userId) && (
+  <Button
+    variant={isFollowing ? "danger" : "primary"}
+    onClick={() => {
+      if (!userId) {
+        setToastMessage("Login to follow");
+        setShowToast(true);
+      } else {
+        handleFollow();
+      }
+    }}
+  >
+    {isFollowing ? "Unfollow" : "Follow"}
+  </Button>
+)}
                 <div className="social-links">
                   {profile.instagram && (
                     <a

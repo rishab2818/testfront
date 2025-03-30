@@ -233,11 +233,14 @@ const QuestionDetail = ({ mode, selectedCategory }) => {
                                 user?.userId === ans.userId
                               }`}
                               state={{ author: ans }}
-                              className="text-decoration-none"
+
                               style={{
-                                color: "inherit", // Inherit the color from the parent span
+                           
+                 color: "#007bff", // Standard link blue color
+                 textDecoration: "underline", // Always show underline
                                 fontWeight: "inherit", // Inherit the font weight
                                 fontSize: "inherit", // Inherit the font size
+                                cursor: "pointer", // Ensure it's clear it's clickable
                               }}
                             >
                               {ans.author}

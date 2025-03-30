@@ -83,7 +83,16 @@ const QuestionCard = ({ question, author, category, options, likes, votes, quest
                 onClick={() => handleVote(key)}
                 style={{ color: "#000000" }}
               >
-                <span className="text-truncate" style={{ maxWidth: "80%" }}>
+          <span
+  className="text-truncate"
+  style={{
+    maxWidth: "100%", // Ensures it takes up full parent width
+    overflow: "hidden", // Hides overflowing text
+    textOverflow: "ellipsis", // Adds "..." if the text overflows
+    whiteSpace: "nowrap", // Keeps text in a single line
+    display: "block", // Ensures it behaves as a block element
+  }}
+>
                   {options[key].length > MAX_OPTION_LENGTH
                     ? `${options[key].substring(0, MAX_OPTION_LENGTH)}...`
                     : options[key]}

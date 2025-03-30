@@ -146,11 +146,14 @@ const QuestionList = ({ mode, selectedCategory, filterType, refresh }) => {
                               user?.userId === q.topAnswer.userId
                             }`}
                             state={{ author: q.topAnswer }}
-                            className="text-decoration-none"
+ 
                             style={{
-                              color: "inherit", // Inherit the color from the parent span
+
+                 color: "#007bff", // Standard link blue color
+    textDecoration: "underline", // Always show underline
                               fontWeight: "inherit", // Inherit the font weight
                               fontSize: "inherit", // Inherit the font size
+                              cursor: "pointer", // Ensure it's clear it's clickable
                             }}
                           >
                             {q.topAnswer.author}
